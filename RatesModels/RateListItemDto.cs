@@ -10,6 +10,7 @@
         public LocationNodeDto NodeTo { get; set; }
         public decimal Value { get; set; }
 
+        public bool IsDeflated { get; set; }
 
     }
 }

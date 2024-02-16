@@ -18,7 +18,6 @@ namespace RatesApplication.Components.Pages
                 return (_currentCount == 0 || _currentCount == 100)
                     ? "btn btn-primary"
                     : "btn btn-primary disabled";
-
             }
         }
 
@@ -26,6 +25,7 @@ namespace RatesApplication.Components.Pages
         {
             _currentCount = 0;
         }
+
         private async Task IncrementCount()
         {
             _currentCount = 0;
@@ -36,10 +36,8 @@ namespace RatesApplication.Components.Pages
             await foreach (var rate in rates)
             {
                 await RatesCommandService.SendRate(rate);
-
                 UpdateProgress(ref count, rateCount);
             }
-
         }
 
         private void UpdateProgress(ref int count, int totalCount)

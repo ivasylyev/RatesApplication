@@ -5,7 +5,7 @@ namespace RatesApplication.Components.Pages
 {
     public partial class Rates
     {
-        private const int PageSize = 30;
+        private const int PageSize = 15;
         [Inject]
         IRatesQueryService RatesQueryService { get; set; } = default!;
 
@@ -15,19 +15,14 @@ namespace RatesApplication.Components.Pages
 
         protected override async Task OnInitializedAsync()
         {
-   
             _rates = await RatesQueryService.GetRatesAsync(PageSize).ToArrayAsync();
             _rateCount = await RatesQueryService.GetRateCountAsync();
-
         }
 
         private async Task PageSelected(int page)
         {
             _currentPageNumber = page;
             _rates = await RatesQueryService.GetRatesAsync(PageSize, (page-1)* PageSize).ToArrayAsync();
-
         }
-
-
     }
 }
