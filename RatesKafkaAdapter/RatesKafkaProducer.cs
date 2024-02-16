@@ -1,6 +1,4 @@
 ﻿using Confluent.Kafka;
-using Confluent.SchemaRegistry.Serdes;
-using Confluent.SchemaRegistry;
 using RatesModels;
 using System;
 using System.Collections.Generic;
@@ -23,35 +21,13 @@ namespace RatesKafkaAdapter
 {
     public class RatesKafkaProducer : IRatesKafkaProducer
     {
-        IProducer<string, RateListItemDto> producer;
+        IProducer<string, string> producer;
         string topicName = "My_Topic";
-        string bootstrapServers = "My_Server";
+        string brokerList = "brokerList";
         public RatesKafkaProducer()
         {
-        
-
-           
-
-            var producerConfig = new ProducerConfig
-            {
-                BootstrapServers = bootstrapServers
-            };
-            var schemaRegistryConfig = new SchemaRegistryConfig
-            {
-                // Note: you can specify more than one schema registry url using the
-                // schema.registry.url property for redundancy (comma separated list). 
-                // The property name is not plural to follow the convention set by
-                // the Java implementation.
-                Url = "http://json-schema.org/draft-07/schema#"
-            };
-            
-            var schemaRegistry = new CachedSchemaRegistryClient(schemaRegistryConfig);
-            producer =
-                new ProducerBuilder<string, RateListItemDto>(producerConfig)
-                    .SetValueSerializer(new JsonSerializer<RateListItemDto>(schemaRegistry))
-                    .Build();
-
-
+            var config = new ProducerConfig { BootstrapServers = brokerList };
+             producer = new ProducerBuilder<string, string>(config).Build();
             Console.WriteLine($"{producer.Name} producing on {topicName}. Enter first names, q to exit.");
 
         }
@@ -60,7 +36,9 @@ namespace RatesKafkaAdapter
         {
             try
             {
-                await producer.ProduceAsync(topicName, new Message<string, RateListItemDto> { Value = rate });
+                var value = JsonConvert.SerializeObject(rate);
+                // TODO: uncomment
+               // await producer.ProduceAsync(topicName, new Message<string, string> { Value = value });
             }
             catch (Exception e)
             {
