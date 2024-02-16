@@ -1,5 +1,6 @@
 using RatesApplication.Components;
-using RatesServices.Services;
+using RatesKafkaAdapter;
+using RatesServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddSingleton<IRatesQueryService, RatesQueryService>();
-builder.Services.AddSingleton<IRatesCommandService, RatesCommandService>();
+builder.Services.AddSingleton<IRatesKafkaProducer, RatesKafkaProducer>();
 
 var app = builder.Build();
 

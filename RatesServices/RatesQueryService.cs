@@ -1,10 +1,10 @@
 ﻿using RatesModels;
 
-namespace RatesServices.Services
+namespace RatesServices
 {
     public class RatesQueryService : IRatesQueryService
     {
-        private string[] _cities = 
+        private string[] _cities =
             {
 
 "Архангельск"

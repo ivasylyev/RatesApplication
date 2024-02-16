@@ -6,11 +6,11 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RatesServices.Services
+namespace RatesServices
 {
     public class RatesCommandService : IRatesCommandService
     {
-        public async Task SendRate(RateListItemDto rate)
+        public async Task SaveRate(RateListItemDto rate)
         {
             await Task.Yield();
         }

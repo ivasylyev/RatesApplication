@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
-using RatesServices.Services;
+using RatesKafkaAdapter;
+using RatesServices;
 
 namespace RatesApplication.Components.Pages
 {
     public partial class Calc
     {
         [Inject]
-        IRatesCommandService RatesCommandService { get; set; } = default!;
+        IRatesKafkaProducer KafkaProducer { get; set; } = default!;
         [Inject]
         IRatesQueryService RatesQueryService { get; set; } = default!;
 
@@ -35,7 +36,7 @@ namespace RatesApplication.Components.Pages
             var rates = RatesQueryService.GetRatesAsync();
             await foreach (var rate in rates)
             {
-                await RatesCommandService.SendRate(rate);
+                await KafkaProducer.SendRate(rate);
                 UpdateProgress(ref count, rateCount);
             }
         }
