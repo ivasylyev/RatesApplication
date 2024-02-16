@@ -1,0 +1,60 @@
+﻿@page "/rates"
+@using RatesServices
+@attribute [StreamRendering]
+@inject IRatesQueryService RatesQueryService
+<PageTitle>Справочник ставок</PageTitle>
+
+<h1>Справочник ставок</h1>
+
+<p>Список ставок</p>
+
+@if (rates == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>RateId</th>
+                <th>StartDate</th>
+                <th>NodeFrom Code</th>
+                <th>NodeFrom Name</th>
+                <th>NodeTo Code</th>
+                <th>NodeTo Name</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rate in rates)
+            {
+                <tr>
+                    <td>@rate.RateId</td>
+                    <td>@rate.StartDate.ToShortDateString()</td>
+                    <td>@rate.EndDate.ToShortDateString()</td>
+                    <td>@rate.NodeFrom?.LocationNodeCode</td>
+                    <td>@rate.NodeFrom?.LocationNodeName</td>
+                    <td>@rate.NodeTo?.LocationNodeCode</td>
+                    <td>@rate.NodeTo?.LocationNodeName</td>
+                    <td>@rate.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private RatesModels.RateListItemDto[]? rates;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate asynchronous loading to demonstrate streaming rendering
+        await Task.Delay(500);
+
+        rates = await RatesQueryService.GetRatesAsync(30, 30).ToArrayAsync();
+        
+    }
+
+   
+}
