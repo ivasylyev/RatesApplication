@@ -1,10 +1,9 @@
 ﻿using RatesModels;
 
-namespace RatesServices
+namespace RatesServices;
+
+public interface IRatesQueryService
 {
-    public interface IRatesQueryService
-    {
-        IAsyncEnumerable<RateListItemDto> GetRatesAsync(int take = int.MaxValue, int skip = 0);
-        Task<int> GetRateCountAsync();
-    }
+    IAsyncEnumerable<RateListItemDto> GetRatesAsync(int take = int.MaxValue, int skip = 0);
+    Task<int> GetRateCountAsync();
 }

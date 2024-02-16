@@ -1,9 +1,8 @@
 ﻿using RatesModels;
 
-namespace RatesServices
+namespace RatesServices;
+
+public interface IRatesCommandService
 {
-    public interface IRatesCommandService
-    {
-        Task SaveRate(RateListItemDto rate);
-    }
+    Task SaveRate(RateListItemDto rate);
 }

@@ -19,11 +19,11 @@ namespace RatesModels
 
         [JsonRequired]
         [JsonProperty("node_from")]
-        public LocationNodeDto NodeFrom { get; set; }
+        public LocationNodeDto? NodeFrom { get; set; }
 
         [JsonRequired]
         [JsonProperty("node_to")]
-        public LocationNodeDto NodeTo { get; set; }
+        public LocationNodeDto? NodeTo { get; set; }
 
         [JsonRequired]
         [JsonProperty("value")]

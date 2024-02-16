@@ -4,7 +4,7 @@ namespace RatesServices
 {
     public class RatesQueryService : IRatesQueryService
     {
-        private string[] _cities =
+        private readonly string[] _cities =
             {
 
 "Архангельск"
@@ -69,6 +69,8 @@ namespace RatesServices
 
         public async IAsyncEnumerable<RateListItemDto> GetRatesAsync(int take = int.MaxValue, int skip = 0)
         {
+            // to remove warning
+            await Task.CompletedTask;
 
             int rateId = skip;
 
