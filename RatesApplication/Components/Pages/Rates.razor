@@ -1,12 +1,11 @@
 ﻿@page "/rates"
 @using RatesServices
+@rendermode InteractiveServer
 @attribute [StreamRendering]
-@inject IRatesQueryService RatesQueryService
+
 <PageTitle>Справочник ставок</PageTitle>
 
 <h1>Справочник ставок</h1>
-
-<p>Список ставок</p>
 
 @if (rates == null)
 {
@@ -14,6 +13,17 @@
 }
 else
 {
+
+
+    @for (int i = 1; i < 10; i++)
+    {
+        var buttonNumber = i;
+        <button class="btn btn-primary" @onclick="@(e=>PageSelected(buttonNumber))">@buttonNumber</button>
+    }
+
+    
+
+   
     <table class="table">
         <thead>
             <tr>
@@ -42,19 +52,5 @@ else
             }
         </tbody>
     </table>
-}
 
-@code {
-    private RatesModels.RateListItemDto[]? rates;
-
-    protected override async Task OnInitializedAsync()
-    {
-        // Simulate asynchronous loading to demonstrate streaming rendering
-        await Task.Delay(500);
-
-        rates = await RatesQueryService.GetRatesAsync(30, 30).ToArrayAsync();
-        
-    }
-
-   
 }
