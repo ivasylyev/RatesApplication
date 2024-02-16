@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,16 +9,23 @@ namespace RatesModels
 {
     public class LocationNodeDto
     {
-        public long LocationNodeId { get; }
-        public string LocationNodeCode { get; }
+        [JsonRequired]
+        [JsonProperty("id")]
+        public long Id { get; }
 
-        public string LocationNodeName { get; }
+        [JsonRequired]
+        [JsonProperty("code")]
+        public string Code { get; }
+
+        [JsonRequired]
+        [JsonProperty("name")]
+        public string Name { get; }
 
         public LocationNodeDto(long id, string code, string name)
         {
-            LocationNodeId = id;
-            LocationNodeCode = code;
-            LocationNodeName = name;
+            Id = id;
+            Code = code;
+            Name = name;
         }
 
     }

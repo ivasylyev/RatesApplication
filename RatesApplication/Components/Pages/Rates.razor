@@ -34,10 +34,10 @@ else
                     <td>@rate.RateId</td>
                     <td>@rate.StartDate.ToShortDateString()</td>
                     <td>@rate.EndDate.ToShortDateString()</td>
-                    <td>@rate.NodeFrom?.LocationNodeCode</td>
-                    <td>@rate.NodeFrom?.LocationNodeName</td>
-                    <td>@rate.NodeTo?.LocationNodeCode</td>
-                    <td>@rate.NodeTo?.LocationNodeName</td>
+                    <td>@rate.NodeFrom?.Code</td>
+                    <td>@rate.NodeFrom?.Name</td>
+                    <td>@rate.NodeTo?.Code</td>
+                    <td>@rate.NodeTo?.Name</td>
                     <td>@rate.Value</td>
                 </tr>
             }
