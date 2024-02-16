@@ -7,23 +7,13 @@
 
 <h1>Справочник ставок</h1>
 
-@if (rates == null)
+@if (_rates == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
 
-
-    @for (int i = 1; i < 10; i++)
-    {
-        var buttonNumber = i;
-        <button class="btn btn-primary" @onclick="@(e=>PageSelected(buttonNumber))">@buttonNumber</button>
-    }
-
-    
-
-   
     <table class="table">
         <thead>
             <tr>
@@ -37,7 +27,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var rate in rates)
+            @foreach (var rate in _rates)
             {
                 <tr>
                     <td>@rate.RateId</td>
@@ -53,4 +43,12 @@ else
         </tbody>
     </table>
 
+    @for (int i = 1; i <= 1 + _rateCount / PageSize; i++)
+    {
+        var pageNumber = i;
+        var btnClass = pageNumber == _currentPageNumber
+        ? "btn btn-primary"
+        : "btn";
+        <button class="@btnClass" @onclick="@(e=>PageSelected(pageNumber))">@pageNumber</button>
+    }
 }

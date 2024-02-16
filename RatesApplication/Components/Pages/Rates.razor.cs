@@ -5,22 +5,26 @@ namespace RatesApplication.Components.Pages
 {
     public partial class Rates
     {
+        private const int PageSize = 30;
         [Inject]
         IRatesQueryService RatesQueryService { get; set; } = default!;
 
-        private RatesModels.RateListItemDto[]? rates;
+        private RatesModels.RateListItemDto[]? _rates;
+        private int _rateCount = 0;
+        private int _currentPageNumber = 1;
 
         protected override async Task OnInitializedAsync()
         {
    
-            rates = await RatesQueryService.GetRatesAsync(30).ToArrayAsync();
+            _rates = await RatesQueryService.GetRatesAsync(PageSize).ToArrayAsync();
+            _rateCount = await RatesQueryService.GetRateCountAsync();
 
         }
 
         private async Task PageSelected(int page)
         {
-
-            rates = await RatesQueryService.GetRatesAsync(30, (page-1)* 30).ToArrayAsync();
+            _currentPageNumber = page;
+            _rates = await RatesQueryService.GetRatesAsync(PageSize, (page-1)* PageSize).ToArrayAsync();
 
         }
 

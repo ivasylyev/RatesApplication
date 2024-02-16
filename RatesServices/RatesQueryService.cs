@@ -69,7 +69,7 @@ namespace RatesServices
         public async IAsyncEnumerable<RateListItemDto> GetRatesAsync(int take = int.MaxValue, int skip = 0)
         {
             await Task.CompletedTask;
-            int rateId = 0;
+            int rateId = skip;
 
             var nodeFromInitialIndex = skip / _nodes.Length;
             for (int nodeFromIndex = nodeFromInitialIndex; nodeFromIndex < _nodes.Length; nodeFromIndex++)
@@ -104,6 +104,12 @@ namespace RatesServices
 
            
 
+        }
+
+        public async Task<int> GetRateCountAsync()
+        {
+            int l = _nodes.Length;
+            return await Task.FromResult(l * l);
         }
 
     }
