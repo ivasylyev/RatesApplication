@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using RatesServices;
+using RatesServices.Services;
 
 namespace RatesApplication.Components.Pages
 {

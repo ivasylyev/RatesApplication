@@ -1,5 +1,5 @@
 using RatesApplication.Components;
-using RatesServices;
+using RatesServices.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddSingleton<IRatesQueryService, RatesQueryService>();
+builder.Services.AddSingleton<IRatesCommandService, RatesCommandService>();
 
 var app = builder.Build();
 

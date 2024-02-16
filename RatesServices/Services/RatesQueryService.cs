@@ -1,10 +1,10 @@
 ﻿using RatesModels;
 
-namespace RatesServices
+namespace RatesServices.Services
 {
     public class RatesQueryService : IRatesQueryService
     {
-        private string[] _cities = new string[]
+        private string[] _cities = 
             {
 
 "Архангельск"
@@ -59,16 +59,17 @@ namespace RatesServices
             };
 
         private LocationNodeDto[] _nodes;
-        public RatesQueryService() {
-
+        public RatesQueryService()
+        {
             _nodes = Enumerable.Range(1, _cities.Length)
                     .Select(index => new LocationNodeDto(index, "A" + index.ToString("0000"), _cities[index - 1]))
                     .ToArray();
-        
+
         }
+
         public async IAsyncEnumerable<RateListItemDto> GetRatesAsync(int take = int.MaxValue, int skip = 0)
         {
-            await Task.CompletedTask;
+
             int rateId = skip;
 
             var nodeFromInitialIndex = skip / _nodes.Length;
@@ -88,22 +89,18 @@ namespace RatesServices
                     }
 
                     var nodeTo = _nodes[nodeToIndex];
-                    yield return new RateListItemDto()
+                    var rate = new RateListItemDto()
                     {
                         RateId = rateId,
-                        StartDate = new DateOnly(2024,01,01),
+                        StartDate = new DateOnly(2024, 01, 01),
                         EndDate = new DateOnly(2024, 12, 31),
                         NodeFrom = nodeFrom,
                         NodeTo = nodeTo,
                         Value = 100.5m + nodeToIndex + nodeToIndex
                     };
+                    yield return rate;
                 }
             }
-
-          
-
-           
-
         }
 
         public async Task<int> GetRateCountAsync()
@@ -111,6 +108,5 @@ namespace RatesServices
             int l = _nodes.Length;
             return await Task.FromResult(l * l);
         }
-
     }
 }
