@@ -6,11 +6,10 @@ namespace RatesKafkaAdapter;
 
 public class RatesKafkaProducer : IRatesKafkaProducer
 {
-    private readonly string _brokerList = "brokerList";
-    private readonly string _topicName = "My_Topic";
+    private readonly string _brokerList = "localhost:9092";
+    private readonly string _topicName = "quickstart-events";
 
     private readonly IProducer<string, string> _producer;
-
 
     public RatesKafkaProducer()
     {
@@ -24,14 +23,11 @@ public class RatesKafkaProducer : IRatesKafkaProducer
         try
         {
             var value = JsonConvert.SerializeObject(rate);
-            // TODO: uncomment
-            // await _producer.ProduceAsync(_topicName, new Message<string, string> { Value = value });
+            await _producer.ProduceAsync(_topicName, new Message<string, string> { Value = value });
         }
         catch (Exception e)
         {
             Console.WriteLine($"error producing message: {e.Message}");
         }
-
-        await Task.Yield();
     }
 }
