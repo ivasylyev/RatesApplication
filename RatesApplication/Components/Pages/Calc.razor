@@ -5,10 +5,16 @@
 
 <h1>Расчет ставок</h1>
 
+<div>
+    <button class="@BtnSendClass" @onclick="@(async () => await SendToKafka())">
+        Отправить ставки на расчет
+    </button>
 
-<button class="@BtnClass" @onclick="(async () => await IncrementCount())">
-    Отправить ставки на расчет
- </button>
+    <button class="@BtnCancelClass" @onclick="@(async () => await CancelSendingToKafka())">
+        Отмена
+    </button>
+</div>
+
 
 <p class="p-4">
     Статус отправки: @_currentCount%

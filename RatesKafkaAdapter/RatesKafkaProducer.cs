@@ -18,12 +18,13 @@ public class RatesKafkaProducer : IRatesKafkaProducer
         Console.WriteLine($"{_producer.Name} producing on {_topicName}. Enter first names, q to exit.");
     }
 
-    public async Task SendRate(RateListItemDto rate)
+    public async Task SendRate(RateListItemDto rate, CancellationToken ct)
     {
         try
         {
             var value = JsonConvert.SerializeObject(rate);
-            await _producer.ProduceAsync(_topicName, new Message<string, string> { Value = value });
+            var message = new Message<string, string> { Value = value };
+            await _producer.ProduceAsync(_topicName, message, ct);
         }
         catch (Exception e)
         {
