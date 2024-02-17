@@ -15,16 +15,17 @@ public class RatesKafkaProducer : IRatesKafkaProducer
     {
         var config = new ProducerConfig { BootstrapServers = _brokerList };
         _producer = new ProducerBuilder<string, string>(config).Build();
-        Console.WriteLine($"{_producer.Name} producing on {_topicName}. Enter first names, q to exit.");
+        Console.WriteLine($"{_producer.Name} producing on {_topicName}.");
     }
 
-    public async Task SendRate(RateListItemDto rate, CancellationToken ct)
+    public async Task SendRate(RateListItemDto rate, CancellationToken ct = default)
     {
         try
         {
             var value = JsonConvert.SerializeObject(rate);
             var message = new Message<string, string> { Value = value };
             await _producer.ProduceAsync(_topicName, message, ct);
+           
         }
         catch (Exception e)
         {
