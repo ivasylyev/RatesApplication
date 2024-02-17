@@ -6,14 +6,14 @@ namespace RatesApplication.Components.Pages;
 
 public partial class Calc
 {
+    private int _currentCount;
+    private CancellationTokenSource _cancellationTokenSource = new();
+
     [Inject] 
     private IRatesKafkaProducer KafkaProducer { get; set; } = default!;
 
-    [Inject]
+    [Inject] 
     private IRatesQueryService RatesQueryService { get; set; } = default!;
-
-    private int _currentCount;
-    private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
     private bool IsSending => _currentCount == 0 || _currentCount == 100;
 
@@ -53,6 +53,7 @@ public partial class Calc
             UpdateProgress(ref count, rateCount);
         }
     }
+
     private async Task CancelSendingToKafka()
     {
         await _cancellationTokenSource.CancelAsync();
@@ -62,8 +63,12 @@ public partial class Calc
     {
         count++;
         var newCount = 100 * count / totalCount;
+
         if (_currentCount != newCount)
+        {
             StateHasChanged();
+        }
+
         _currentCount = newCount;
     }
 }

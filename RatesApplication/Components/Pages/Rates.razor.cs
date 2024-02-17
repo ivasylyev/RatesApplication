@@ -6,8 +6,9 @@ namespace RatesApplication.Components.Pages;
 public partial class Rates
 {
     private const int PageSize = 15;
+    bool _skipped = false;
 
-    [Inject]
+    [Inject] 
     private IRatesQueryService RatesQueryService { get; set; } = default!;
 
     private RatesModels.RateListItemDto[]? _rates;

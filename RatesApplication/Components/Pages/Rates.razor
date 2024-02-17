@@ -44,16 +44,13 @@ else
         </tbody>
     </table>
 
-    @code{
-        bool skipped = false;
-    }
     @for (int i = 1; i <= 1 + _rateCount / PageSize; i++)
     {       
         var pageNumber = i;
        
         if (pageNumber <= 2 || pageNumber >= _rateCount / PageSize || Math.Abs(_currentPageNumber - pageNumber) < 5)
         {
-            skipped = false;
+            _skipped = false;
             var btnClass = pageNumber == _currentPageNumber
                ? "btn btn-primary"
                : "btn";
@@ -61,9 +58,9 @@ else
             <button class="@btnClass" @onclick="@(e=>PageSelected(pageNumber))">
                 @pageNumber
             </button>
-        }else if (!skipped)
+        }else if (!_skipped)
         {
-            skipped = true;
+            _skipped = true;
             <span>...</span>
         }
     }
