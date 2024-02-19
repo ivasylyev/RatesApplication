@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Sibur.Digital.Svt.Nkhtk.DB</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{fa62bb54-4b72-4b42-9c51-4f44c76bd08e}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath />
+    <RootNamespace>Sibur.Digital.Svt.Nkhtk.DB</RootNamespace>
+    <AssemblyName>Sibur.Digital.Svt.Nkhtk.DB</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="Scripts" />
+    <Folder Include="Scripts\v0.0.8" />
+    <Folder Include="Security\" />
+    <Folder Include="nkhtk\" />
+    <Folder Include="nkhtk\Stored Procedures\" />
+    <Folder Include="nkhtk\Tables\" />
+    <Folder Include="Scripts\v1.0.50" />
+    <Folder Include="nkhtk\Functions\" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="Scripts\v1.0.55" />
+    <Folder Include="Scripts\v1.0.58" />
+    <Folder Include="Scripts\v1.0.63" />
+    <Folder Include="Scripts\v1.0.67" />
+    <Folder Include="Scripts\v1.0.68" />
+    <Folder Include="Scripts\v1.0.69" />
+    <Folder Include="Scripts\v1.0.81" />
+    <Folder Include="Scripts\v1.0.92" />
+    <Folder Include="Scripts\v1.0.92\SVT-1616" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Scripts\v0.0.8\AddSchema.sql" />
+    <None Include="Security\RoleMemberships.sql" />
+    <Build Include="nkhtk\Stored Procedures\GetTemplates.sql" />
+    <Build Include="Security\nkhtk2.sql" />
+    <Build Include="Security\nkhtk1.sql" />
+    <Build Include="nkhtk\Stored Procedures\GetWorksheet.sql" />
+    <Build Include="nkhtk\Tables\Worksheet.sql" />
+    <Build Include="nkhtk\Tables\Template.sql" />
+    <None Include="Scripts\v1.0.50\010.create_templates.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.50\020.create_worksheets.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.50\040.create_business_rule_types.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.50\030.create_business_rule_kinds.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.50\050.create_business_rule_operator.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.50\060.create_rule_entities.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.50\080.create_businessRules.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Build Include="nkhtk\Tables\RuleOperator.sql" />
+    <Build Include="nkhtk\Tables\RuleKind.sql" />
+    <Build Include="nkhtk\Tables\RuleEntityItem.sql" />
+    <Build Include="nkhtk\Tables\RuleEntity.sql" />
+    <Build Include="nkhtk\Tables\RuleDataType.sql" />
+    <Build Include="nkhtk\Tables\Rule.sql" />
+    <Build Include="nkhtk\Functions\fnRuleOperatorByName.sql" />
+    <Build Include="nkhtk\Functions\fnRuleKindByName.sql" />
+    <Build Include="nkhtk\Functions\fnRuleDataTypeByName.sql" />
+    <Build Include="nkhtk\Stored Procedures\GetRules.sql" />
+    <None Include="Scripts\v1.0.50\079.create_rule_dictionaries.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.50\090.GetTemplates.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.50\100.GetWorksheet.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.50\110.GetRules.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Build Include="nkhtk\Tables\RuleDictionaryItem.sql" />
+    <Build Include="nkhtk\Tables\RuleDictionary.sql" />
+    <Build Include="nkhtk\Functions\fnRuleEntityByName.sql" />
+    <Build Include="nkhtk\Functions\fnRuleDictionaryByName.sql" />
+    <Build Include="nkhtk\Tables\TmpDistanceDictionary.sql" />
+    <None Include="Scripts\v1.0.50\071.create_dist_dictionaries.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.55\001.create_worksheets.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.58\000.delete_old_data.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.58\005.indexes.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.58\010.create_temp_node_dict.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.58\015.create_temp_material_dict.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.58\020.create_temp_dist_dict.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.58\030.update_rule_dictionaries.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.58\040.update_rule_entities.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.58\050.update_businessRules.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.58\101.GetDictionaries.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.58\102.GetRuleEntities.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.58\103.GetRules.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Build Include="nkhtk\Tables\TmpProductDictionary_1.sql" />
+    <Build Include="nkhtk\Tables\TmpNodeDictionary_1.sql" />
+    <Build Include="nkhtk\Stored Procedures\GetRuleEntities_1.sql" />
+    <Build Include="nkhtk\Stored Procedures\GetRuleDictionaries_1.sql" />
+    <None Include="Scripts\v1.0.67\010.create_template_type.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.67\011.change_existing_templates.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.67\020.add_MM_templates.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.67\021.add_MM_worksheets.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.67\101.sp_GetTemplates.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.67\030.update_rule_dictionaries.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.67\040.update_rule_entities.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.67\050.update_businessRules.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.67\022.add_business_rule_operator.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Build Include="nkhtk\Tables\TemplateType.sql" />
+    <Build Include="nkhtk\Stored Procedures\GetBusinessRules.sql" />
+    <None Include="Scripts\v1.0.67\023.add_business_rule_kinds.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.67\100.sp_GetWorksheet.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.68\020.add_business_rule_kinds.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.68\050.update_businessRules_removeGarbageRows.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.68\030.update_rule_dictionaries.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.68\051.update_businessRules_Rates.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.68\052.update_businessRules_SpecialRates.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.68\053.add_businessRules_SpecialRates.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.69\020.add_MM_Land_templates.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.69\021.add_MM_Land_worksheets.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.69\030.update_rule_dictionaries.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.69\040.update_rule_entities.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.69\050.update_businessRules.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.69\031.fix_rule_dictionaries.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.81\001.update_node_dict.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.92\SVT-1616\010.add_New_MM_Sea_Templates_Worksheets.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\v1.0.92\SVT-1616\020.update_MM_Sea_businessRules.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SqlSchemaCompareFromDBToProject.scmp" />
+    <None Include="SqlSchemaCompareFromProjectToDB.scmp" />
+    <None Include="Sibur.Digital.Svt.Nkhtk.DB.publish.xml" />
+    <None Include="Scripts\v1.0.63\01.FixNBRules.sql" />
+  </ItemGroup>
+</Project>

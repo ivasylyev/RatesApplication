@@ -1,0 +1,111 @@
+@page "/MultiModalSpecialRates"
+@inherits Rates
+
+<PageTitle>СВТ Конвертер: ММ Спец. Ставки</PageTitle>
+
+<h1>ММ Спец. Ставки</h1>
+
+<EditForm EditContext="@EditContext" OnSubmit="@HandleConvert">
+    <DataAnnotationsValidator />
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <SvtInputSelect Title="Шаблон спец. ставок ММ-перевозок"
+                                Items="Model.TemplateItems"
+                                Value="Model.TemplateId"
+                                ValueChanged="TemplateValueChanged"
+                                Required="Model.Submitted"
+                                Disabled="Model.Loading"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <SvtInputSelect Title="Имя вкладки шаблона спец. ставок ММ-перевозок"
+                                Items="Model.TemplateWorksheetItems"
+                                @bind-Value="Model.TemplateWorksheetId"
+                                Required="Model.Submitted"
+                                Disabled="@(Model.Loading || Model.TemplateId == 0)" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <SvtInputFile Title="Excel файл шаблона спец. ставок ММ-перевозок"
+                              FileChanged="async f => await LoadFileAsync(f)"
+                              Required="Model.Submitted"
+                              Disabled="Model.Loading"/>
+            </div>
+            <div class="col-6">
+                <SvtInputSelect Title="Имя вкладки загруженного excel файла"
+                                Items="Model.ExcelWorksheetNames"
+                                @bind-Value="Model.ExcelWorksheetIndex"
+                                Required="Model.Submitted"
+                                Disabled="Model.Loading"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <SvtInputDate Title="Дата начала"
+                              Value="Model.StartDate"
+                              ValueChanged="StartDateValueChanged"
+                              Required="Model.Submitted"
+                              Disabled="Model.Loading"/>
+            </div>
+            <div class="col-6">
+                <SvtInputDate Title="Дата окончания"
+                              Value="Model.EndDate"
+                              ValueChanged="EndDateValueChanged"
+                              Required="Model.Submitted"
+                              Disabled="Model.Loading"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <SvtInputText Title="Группа продуктов"
+                              Value="@MultiModalModel.ProductGroup"
+                              ValueChanged="ProductGroupChanged"
+                              Required="Model.Submitted"
+                              Disabled="Model.Loading"/>
+            </div>
+            <div class="col-6">
+                <SvtInputText Title="Продукт"
+                              Value="@MultiModalModel.Product"
+                              ValueChanged="ProductChanged"
+                              Required="false"
+                              Disabled="Model.Loading"/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <SvtInputText Title="Общая валюта затрат"
+                              Value="@MultiModalModel.CurrencyStandard"
+                              ValueChanged="CurrencyChanged"
+                              Required="Model.Submitted"
+                              Disabled="Model.Loading"/>
+            </div>
+            <div class="col-4">
+                <SvtInputText Title="Эффективная загрузка"
+                              Value="@MultiModalModel.EffectiveLoadOfTransportType"
+                              ValueChanged="EffectiveLoadOfTransportTypeChanged"
+                              Required="Model.Submitted"
+                              Disabled="Model.Loading"/>
+            </div>
+            <div class="col-4">
+                <SvtInputText Title="Базис поставки"
+                              Value="@MultiModalModel.Basis"
+                              ValueChanged="BasisChanged"
+                              Required="Model.Submitted"
+                              Disabled="Model.Loading"/>
+            </div>
+        </div>
+
+        <FileConvertSubmit Disabled="Model.Loading"/>
+
+        <InfoPanel Info="@Model.Info" />
+
+    </div>
+</EditForm>

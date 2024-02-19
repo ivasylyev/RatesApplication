@@ -1,0 +1,17 @@
+@using Sibur.Digital.Svt.Nkhtk.UI.Models
+
+@if (!string.IsNullOrEmpty(Info?.Text))
+{
+    <div class="row">
+        <div class="col">
+            @if (Info.Type == InfoType.Error)
+            {
+                <p class="alert alert-danger">Ошибка: @Info.Text</p>
+            }
+            else
+            {
+                <p class="alert alert-info">@Info.Text</p>
+            }
+        </div>
+    </div>
+}

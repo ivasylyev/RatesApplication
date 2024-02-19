@@ -1,0 +1,83 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32319.34
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0DB40E8B-9C52-4F7D-BC41-A5FF692E4AF8}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		Dockerfile = Dockerfile
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sibur.Digital.Svt.Nkhtk.Converter", "Sibur.Digital.Svt.Nkhtk.Converter\Sibur.Digital.Svt.Nkhtk.Converter.csproj", "{EED04B35-3AE5-4579-9DA1-92F0C2DE6ECA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sibur.Digital.Svt.Nkhtk.Data", "Sibur.Digital.Svt.Nkhtk.Data\Sibur.Digital.Svt.Nkhtk.Data.csproj", "{7FE0E481-11BD-4689-BF80-312573AEF4C7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8712FACF-66F5-4756-B009-E63E27C5A961}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sibur.Digital.Svt.Nkhtk.Data.Tests", "Sibur.Digital.Svt.Nkhtk.Data.Tests\Sibur.Digital.Svt.Nkhtk.Data.Tests.csproj", "{486A870B-8900-4880-A6FF-D815A59FCF85}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Sibur.Digital.Svt.Nkhtk.DB", "Sibur.Digital.Svt.Nkhtk.DB\Sibur.Digital.Svt.Nkhtk.DB.sqlproj", "{FA62BB54-4B72-4B42-9C51-4F44C76BD08E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sibur.Digital.Svt.Infrastructure", "Sibur.Digital.Svt.Infrastructure\Sibur.Digital.Svt.Infrastructure.csproj", "{2B0B4DCD-AEC9-485A-934E-51BDA3BA7F39}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sibur.Digital.Svt.Infrastructure.Tests", "Sibur.Digital.Svt.Infrastructure.Tests\Sibur.Digital.Svt.Infrastructure.Tests.csproj", "{5E28F2FD-98A6-40DB-AB8D-4B2DBD1AA548}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sibur.Digital.Svt.Nkhtk.Converter.Tests", "Sibur.Digital.Svt.Nkhtk.Converter.Tests\Sibur.Digital.Svt.Nkhtk.Converter.Tests.csproj", "{5F62B846-BAE2-4F25-9A88-E3D01D1DA125}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sibur.Digital.Svt.Nkhtk.UI", "Sibur.Digital.Svt.Nkhtk.UI\Sibur.Digital.Svt.Nkhtk.UI.csproj", "{9CF80D53-112A-4B00-A8A8-52BCFC86773D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EED04B35-3AE5-4579-9DA1-92F0C2DE6ECA}.Debug|x64.ActiveCfg = Debug|x64
+		{EED04B35-3AE5-4579-9DA1-92F0C2DE6ECA}.Debug|x64.Build.0 = Debug|x64
+		{EED04B35-3AE5-4579-9DA1-92F0C2DE6ECA}.Release|x64.ActiveCfg = Release|x64
+		{EED04B35-3AE5-4579-9DA1-92F0C2DE6ECA}.Release|x64.Build.0 = Release|x64
+		{7FE0E481-11BD-4689-BF80-312573AEF4C7}.Debug|x64.ActiveCfg = Debug|x64
+		{7FE0E481-11BD-4689-BF80-312573AEF4C7}.Debug|x64.Build.0 = Debug|x64
+		{7FE0E481-11BD-4689-BF80-312573AEF4C7}.Release|x64.ActiveCfg = Release|x64
+		{7FE0E481-11BD-4689-BF80-312573AEF4C7}.Release|x64.Build.0 = Release|x64
+		{486A870B-8900-4880-A6FF-D815A59FCF85}.Debug|x64.ActiveCfg = Debug|x64
+		{486A870B-8900-4880-A6FF-D815A59FCF85}.Debug|x64.Build.0 = Debug|x64
+		{486A870B-8900-4880-A6FF-D815A59FCF85}.Release|x64.ActiveCfg = Release|x64
+		{486A870B-8900-4880-A6FF-D815A59FCF85}.Release|x64.Build.0 = Release|x64
+		{FA62BB54-4B72-4B42-9C51-4F44C76BD08E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FA62BB54-4B72-4B42-9C51-4F44C76BD08E}.Debug|x64.Build.0 = Debug|Any CPU
+		{FA62BB54-4B72-4B42-9C51-4F44C76BD08E}.Debug|x64.Deploy.0 = Debug|Any CPU
+		{FA62BB54-4B72-4B42-9C51-4F44C76BD08E}.Release|x64.ActiveCfg = Release|Any CPU
+		{FA62BB54-4B72-4B42-9C51-4F44C76BD08E}.Release|x64.Build.0 = Release|Any CPU
+		{FA62BB54-4B72-4B42-9C51-4F44C76BD08E}.Release|x64.Deploy.0 = Release|Any CPU
+		{2B0B4DCD-AEC9-485A-934E-51BDA3BA7F39}.Debug|x64.ActiveCfg = Debug|x64
+		{2B0B4DCD-AEC9-485A-934E-51BDA3BA7F39}.Debug|x64.Build.0 = Debug|x64
+		{2B0B4DCD-AEC9-485A-934E-51BDA3BA7F39}.Release|x64.ActiveCfg = Release|x64
+		{2B0B4DCD-AEC9-485A-934E-51BDA3BA7F39}.Release|x64.Build.0 = Release|x64
+		{5E28F2FD-98A6-40DB-AB8D-4B2DBD1AA548}.Debug|x64.ActiveCfg = Debug|x64
+		{5E28F2FD-98A6-40DB-AB8D-4B2DBD1AA548}.Debug|x64.Build.0 = Debug|x64
+		{5E28F2FD-98A6-40DB-AB8D-4B2DBD1AA548}.Release|x64.ActiveCfg = Release|x64
+		{5E28F2FD-98A6-40DB-AB8D-4B2DBD1AA548}.Release|x64.Build.0 = Release|x64
+		{5F62B846-BAE2-4F25-9A88-E3D01D1DA125}.Debug|x64.ActiveCfg = Debug|x64
+		{5F62B846-BAE2-4F25-9A88-E3D01D1DA125}.Debug|x64.Build.0 = Debug|x64
+		{5F62B846-BAE2-4F25-9A88-E3D01D1DA125}.Release|x64.ActiveCfg = Release|x64
+		{5F62B846-BAE2-4F25-9A88-E3D01D1DA125}.Release|x64.Build.0 = Release|x64
+		{9CF80D53-112A-4B00-A8A8-52BCFC86773D}.Debug|x64.ActiveCfg = Debug|x64
+		{9CF80D53-112A-4B00-A8A8-52BCFC86773D}.Debug|x64.Build.0 = Debug|x64
+		{9CF80D53-112A-4B00-A8A8-52BCFC86773D}.Release|x64.ActiveCfg = Release|x64
+		{9CF80D53-112A-4B00-A8A8-52BCFC86773D}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{486A870B-8900-4880-A6FF-D815A59FCF85} = {8712FACF-66F5-4756-B009-E63E27C5A961}
+		{5E28F2FD-98A6-40DB-AB8D-4B2DBD1AA548} = {8712FACF-66F5-4756-B009-E63E27C5A961}
+		{5F62B846-BAE2-4F25-9A88-E3D01D1DA125} = {8712FACF-66F5-4756-B009-E63E27C5A961}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9D768A4E-32D3-49BB-B834-52763D57B1E3}
+	EndGlobalSection
+EndGlobal

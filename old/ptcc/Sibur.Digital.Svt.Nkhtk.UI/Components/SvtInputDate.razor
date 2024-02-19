@@ -1,0 +1,14 @@
+@inherits SvtInput
+<p>
+    <label>
+        @Title
+    </label>
+
+    <InputDate ValueExpression="@(() => Value)"
+               Value="@Value"
+               ValueChanged="@(async (DateTime? value) => await OnValueChanged(value))"
+               disabled="@Disabled"
+               class="@CssClass">
+    </InputDate>
+
+</p>
