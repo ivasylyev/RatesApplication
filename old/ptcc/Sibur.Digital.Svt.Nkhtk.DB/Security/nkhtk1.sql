@@ -1,0 +1,3 @@
+﻿CREATE SCHEMA [nkhtk1]
+    AUTHORIZATION [dbo];
+

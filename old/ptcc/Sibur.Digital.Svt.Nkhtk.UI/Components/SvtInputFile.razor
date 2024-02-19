@@ -1,0 +1,12 @@
+@inherits SvtInput
+<p>
+    <label>
+        @Title 
+    </label>
+
+    <InputFile OnChange="@(async e => await OnFileChanged(e))"
+               accept=".xls,.xlsx"
+               class="@CssClass"
+               disabled="@Disabled"/>
+    
+</p>
