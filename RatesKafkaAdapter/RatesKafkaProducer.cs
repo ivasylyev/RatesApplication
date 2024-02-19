@@ -32,4 +32,4 @@ public class RatesKafkaProducer : KafkaService, IRatesKafkaProducer
             Logger.LogError(e, "Cannot send rate");
         }
     }
-}
+} 
