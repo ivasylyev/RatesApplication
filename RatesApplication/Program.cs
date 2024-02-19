@@ -1,6 +1,7 @@
 using RatesApplication.Components;
 using RatesKafkaAdapter;
 using RatesServices;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,12 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddSingleton<IRatesQueryService, RatesQueryService>();
 builder.Services.AddSingleton<IRatesKafkaProducer, RatesKafkaProducer>();
+
+var logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+builder.Logging.AddSerilog(logger);
 
 var app = builder.Build();
 

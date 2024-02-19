@@ -1,8 +1,9 @@
-﻿using RatesModels;
+﻿using Microsoft.Extensions.Logging;
+using RatesModels;
 
 namespace RatesServices
 {
-    public class RatesQueryService : IRatesQueryService
+    public class RatesQueryService : Service, IRatesQueryService
     {
         private readonly string[] _cities =
             {
@@ -59,7 +60,7 @@ namespace RatesServices
             };
 
         private LocationNodeDto[] _nodes;
-        public RatesQueryService()
+        public RatesQueryService(ILogger<Service> logger) : base(logger)
         {
             _nodes = Enumerable.Range(1, _cities.Length)
                     .Select(index => new LocationNodeDto(index, "A" + index.ToString("0000"), _cities[index - 1]))
