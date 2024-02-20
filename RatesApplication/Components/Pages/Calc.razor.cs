@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
 using RatesKafkaAdapter;
+using RatesModels;
 using RatesServices;
 
 namespace RatesApplication.Components.Pages;
 
 public partial class Calc
 {
+    private int _bufferSize = 100;
     private int _currentCount;
     private CancellationTokenSource _cancellationTokenSource = new();
 
@@ -39,18 +41,34 @@ public partial class Calc
 
         var rateCount = await RatesQueryService.GetRateCountAsync();
         var rates = RatesQueryService.GetRatesAsync();
-
+        var  ratesBuffer = new List<RateListItemDto>(_bufferSize);
+   
         await foreach (var rate in rates)
         {
-            if (_cancellationTokenSource.IsCancellationRequested)
+            ratesBuffer.Add(rate);
+            if (ratesBuffer.Count == _bufferSize)
             {
-                _currentCount = 0;
-                _cancellationTokenSource = new CancellationTokenSource();
-                break;
-            }
+                if (_cancellationTokenSource.IsCancellationRequested)
+                {
+                    _currentCount = 0;
+                    _cancellationTokenSource = new CancellationTokenSource();
+                    break;
+                }
 
-            await KafkaProducer.SendRate(rate, _cancellationTokenSource.Token);
-            UpdateProgress(ref count, rateCount);
+                KafkaProducer.SendRates(ratesBuffer, _cancellationTokenSource.Token);
+                if (UpdateProgress(ref count, ratesBuffer.Count, rateCount))
+                {
+                    // Даем шанс потоку UI отрисовать измененения
+                    await Task.Yield();
+                }
+
+                ratesBuffer.Clear();
+            }
+        }
+        if (ratesBuffer.Any())
+        {
+            KafkaProducer.SendRates(ratesBuffer, _cancellationTokenSource.Token);
+            UpdateProgress(ref count, ratesBuffer.Count, rateCount);
         }
     }
 
@@ -59,16 +77,18 @@ public partial class Calc
         await _cancellationTokenSource.CancelAsync();
     }
 
-    private void UpdateProgress(ref int count, int totalCount)
+    private bool UpdateProgress(ref int count, int delta, int totalCount)
     {
-        count++;
+        
+        count+=delta;
         var newCount = 100 * count / totalCount;
-
-        if (_currentCount != newCount)
+        bool hasChanged = _currentCount != newCount;
+        if (hasChanged)
         {
             StateHasChanged();
         }
 
         _currentCount = newCount;
+        return hasChanged;
     }
 }

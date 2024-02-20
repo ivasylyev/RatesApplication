@@ -4,6 +4,6 @@ namespace RatesKafkaAdapter
 {
     public interface IRatesKafkaProducer
     {
-        Task SendRate(RateListItemDto rate, CancellationToken ct);
+        void SendRates(IEnumerable<RateListItemDto> rate, CancellationToken ct);
     }
 }

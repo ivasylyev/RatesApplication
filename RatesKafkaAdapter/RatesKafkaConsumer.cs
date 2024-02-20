@@ -22,7 +22,7 @@
 //{
 //    public class RatesKafkaConsumer 
 //    {
-//        public async Task SendRate(RateListItemDto rate)
+//        public async Task SendRates(RateListItemDto rate)
 //        {
 //            await Task.Yield();
 //        }
