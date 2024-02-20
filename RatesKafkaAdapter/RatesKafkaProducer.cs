@@ -16,7 +16,7 @@ public class RatesKafkaProducer : KafkaService, IRatesKafkaProducer
     {
         var config = new ProducerConfig { BootstrapServers = _brokerList };
         _producer = new ProducerBuilder<string, string>(config).Build();
-        Console.WriteLine($"{_producer.Name} producing on {_topicName}.");
+        Logger.LogInformation($"{_producer.Name} producing on {_topicName}.");
     }
 
     public async Task SendRate(RateListItemDto rate, CancellationToken ct = default)
