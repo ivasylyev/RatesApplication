@@ -1,9 +1,7 @@
-﻿using RatesModels;
+﻿using RatesDto;
+namespace RatesKafkaAdapter;
 
-namespace RatesKafkaAdapter
+public interface IRatesKafkaProducer
 {
-    public interface IRatesKafkaProducer
-    {
-        void SendRates(IEnumerable<RateListItemDto> rate, CancellationToken ct);
-    }
+    void SendRates(IEnumerable<RateDto> rate, CancellationToken ct);
 }

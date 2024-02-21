@@ -1,27 +1,23 @@
 ﻿using Confluent.Kafka;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using RatesModels;
+using RatesDto;
 
 namespace RatesKafkaAdapter;
 
 public class RatesKafkaProducer : KafkaService, IRatesKafkaProducer
 {
-    private readonly int _coolDownIntervalSec = 10;
-    private readonly string _brokerList = "localhost:9092";
-    private readonly string _topicName = "quickstart-events";
-
     private readonly IProducer<Null, string> _producer;
 
-    public RatesKafkaProducer(ILogger<KafkaService> logger) : base(logger)
+    public RatesKafkaProducer(IOptions<KafkaOptions> options, ILogger<KafkaService> logger) : base(options, logger)
     {
-        var config = new ProducerConfig { BootstrapServers = _brokerList };
+        var config = new ProducerConfig { BootstrapServers = Options.BrokerList };
         _producer = new ProducerBuilder<Null, string>(config).Build();
-        Logger.LogInformation($"{_producer.Name} producing on {_topicName}.");
+        Logger.LogInformation($"{_producer.Name} producing on {Options.RatesOutTopicName}.");
     }
 
-
-    public void SendRates(IEnumerable<RateListItemDto> rates, CancellationToken ct = default)
+    public void SendRates(IEnumerable<RateDto> rates, CancellationToken ct)
     {
         try
         {
@@ -31,10 +27,10 @@ public class RatesKafkaProducer : KafkaService, IRatesKafkaProducer
                     break;
                 var value = JsonConvert.SerializeObject(rate);
                 var message = new Message<Null, string> { Value = value };
-                _producer.Produce(_topicName, message, DeliveryHandler);
+                _producer.Produce(Options.RatesOutTopicName, message, DeliveryHandler);
             }
 
-            _producer.Flush(TimeSpan.FromSeconds(_coolDownIntervalSec));
+            _producer.Flush(TimeSpan.FromSeconds(Options.CoolDownIntervalSec));
         }
         catch (Exception e)
         {

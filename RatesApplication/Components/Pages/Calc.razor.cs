@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Mapster;
+using Microsoft.AspNetCore.Components;
+using RatesDto;
 using RatesKafkaAdapter;
-using RatesModels;
 using RatesServices;
 
 namespace RatesApplication.Components.Pages;
@@ -41,12 +42,13 @@ public partial class Calc
 
         var rateCount = await RatesQueryService.GetRateCountAsync();
         var rates = RatesQueryService.GetRatesAsync();
-        var  ratesBuffer = new List<RateListItemDto>(_bufferSize);
+        var rateDtoBuffer = new List<RateDto>(_bufferSize);
    
         await foreach (var rate in rates)
         {
-            ratesBuffer.Add(rate);
-            if (ratesBuffer.Count == _bufferSize)
+            var rateDto = rate.Adapt<RateDto>();
+            rateDtoBuffer.Add(rateDto);
+            if (rateDtoBuffer.Count == _bufferSize)
             {
                 if (_cancellationTokenSource.IsCancellationRequested)
                 {
@@ -55,20 +57,20 @@ public partial class Calc
                     break;
                 }
 
-                KafkaProducer.SendRates(ratesBuffer, _cancellationTokenSource.Token);
-                if (UpdateProgress(ref count, ratesBuffer.Count, rateCount))
+                KafkaProducer.SendRates(rateDtoBuffer, _cancellationTokenSource.Token);
+                if (UpdateProgress(ref count, rateDtoBuffer.Count, rateCount))
                 {
                     // Даем шанс потоку UI отрисовать измененения
                     await Task.Yield();
                 }
 
-                ratesBuffer.Clear();
+                rateDtoBuffer.Clear();
             }
         }
-        if (ratesBuffer.Any())
+        if (rateDtoBuffer.Any())
         {
-            KafkaProducer.SendRates(ratesBuffer, _cancellationTokenSource.Token);
-            UpdateProgress(ref count, ratesBuffer.Count, rateCount);
+            KafkaProducer.SendRates(rateDtoBuffer, _cancellationTokenSource.Token);
+            UpdateProgress(ref count, rateDtoBuffer.Count, rateCount);
         }
     }
 

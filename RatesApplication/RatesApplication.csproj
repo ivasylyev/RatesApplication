@@ -10,15 +10,21 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
+    <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     <PackageReference Include="Serilog" Version="2.12.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RatesDto\RatesDto.csproj" />
     <ProjectReference Include="..\RatesKafkaAdapter\RatesKafkaAdapter.csproj" />
     <ProjectReference Include="..\RatesModels\RatesModels.csproj" />
     <ProjectReference Include="..\RatesServices\RatesServices.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Config\" />
   </ItemGroup>
 
 </Project>

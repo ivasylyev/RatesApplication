@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RatesServices", "RatesServi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RatesModels", "RatesModels\RatesModels.csproj", "{E3421CC5-53A7-4476-93B0-839F75374BBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RatesKafkaAdapter", "RatesKafkaAdapter\RatesKafkaAdapter.csproj", "{C6239439-AD4F-49FB-95EA-DA03E0E1ABB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RatesKafkaAdapter", "RatesKafkaAdapter\RatesKafkaAdapter.csproj", "{C6239439-AD4F-49FB-95EA-DA03E0E1ABB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RatesDto", "RatesDto\RatesDto.csproj", "{823FD0E8-08BB-4C71-AE1F-A0F5B1FA0F95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{C6239439-AD4F-49FB-95EA-DA03E0E1ABB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6239439-AD4F-49FB-95EA-DA03E0E1ABB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6239439-AD4F-49FB-95EA-DA03E0E1ABB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{823FD0E8-08BB-4C71-AE1F-A0F5B1FA0F95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{823FD0E8-08BB-4C71-AE1F-A0F5B1FA0F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{823FD0E8-08BB-4C71-AE1F-A0F5B1FA0F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{823FD0E8-08BB-4C71-AE1F-A0F5B1FA0F95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

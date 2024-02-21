@@ -22,7 +22,7 @@
 //{
 //    public class RatesKafkaConsumer 
 //    {
-//        public async Task SendRates(RateListItemDto rate)
+//        public async Task SendRates(Rate rate)
 //        {
 //            await Task.Yield();
 //        }
@@ -66,9 +66,9 @@
 //                var consumeTask = Task.Run(() =>
 //                {
 //                    using (var consumer =
-//                        new ConsumerBuilder<string, RateListItemDto>(consumerConfig)
+//                        new ConsumerBuilder<string, Rate>(consumerConfig)
 //                            .SetKeyDeserializer(Deserializers.Utf8)
-//                            .SetValueDeserializer(new JsonDeserializer<RateListItemDto>().AsSyncOverAsync())
+//                            .SetValueDeserializer(new JsonDeserializer<Rate>().AsSyncOverAsync())
 //                            .SetErrorHandler((_, e) => Console.WriteLine($"Error: {e.Reason}"))
 //                            .Build())
 //                    {

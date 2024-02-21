@@ -2,12 +2,14 @@ using RatesApplication.Components;
 using RatesKafkaAdapter;
 using RatesServices;
 using Serilog;
+using Sibur.Digital.Svt.Nkhtk.UI.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+builder.Services.Configure<KafkaOptions>(builder.Configuration.GetSection(KafkaOptions.Kafka));
 builder.Services.AddSingleton<IRatesQueryService, RatesQueryService>();
 builder.Services.AddSingleton<IRatesKafkaProducer, RatesKafkaProducer>();
 

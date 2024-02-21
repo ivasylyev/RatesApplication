@@ -59,16 +59,16 @@ namespace RatesServices
 ,"Ярославль"
             };
 
-        private LocationNodeDto[] _nodes;
+        private LocationNode[] _nodes;
         public RatesQueryService(ILogger<Service> logger) : base(logger)
         {
             _nodes = Enumerable.Range(1, _cities.Length)
-                    .Select(index => new LocationNodeDto(index, "A" + index.ToString("0000"), _cities[index - 1]))
+                    .Select(index => new LocationNode(index, "A" + index.ToString("0000"), _cities[index - 1]))
                     .ToArray();
 
         }
 
-        public async IAsyncEnumerable<RateListItemDto> GetRatesAsync(int take = int.MaxValue, int skip = 0)
+        public async IAsyncEnumerable<Rate> GetRatesAsync(int take = int.MaxValue, int skip = 0)
         {
             // to remove warning
             await Task.CompletedTask;
@@ -92,7 +92,7 @@ namespace RatesServices
                     }
 
                     var nodeTo = _nodes[nodeToIndex];
-                    var rate = new RateListItemDto()
+                    var rate = new Rate()
                     {
                         RateId = rateId,
                         StartDate = new DateOnly(2024, 01, 01),

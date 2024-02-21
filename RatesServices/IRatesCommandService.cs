@@ -4,5 +4,5 @@ namespace RatesServices;
 
 public interface IRatesCommandService
 {
-    Task SaveRate(RateListItemDto rate);
+    Task SaveRate(Rate rate);
 }

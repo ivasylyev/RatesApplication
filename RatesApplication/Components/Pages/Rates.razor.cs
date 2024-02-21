@@ -6,13 +6,13 @@ namespace RatesApplication.Components.Pages;
 public partial class Rates
 {
     private const int PageSize = 15;
-    bool _skipped = false;
+    bool _skipped;
 
     [Inject] 
     private IRatesQueryService RatesQueryService { get; set; } = default!;
 
-    private RatesModels.RateListItemDto[]? _rates;
-    private int _rateCount = 0;
+    private RatesModels.Rate[]? _rates;
+    private int _rateCount;
     private int _currentPageNumber = 1;
 
     protected override async Task OnInitializedAsync()

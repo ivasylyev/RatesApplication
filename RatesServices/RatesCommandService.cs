@@ -10,7 +10,7 @@ public class RatesCommandService : Service, IRatesCommandService
     {
 
     }
-    public async Task SaveRate(RateListItemDto rate)
+    public async Task SaveRate(Rate rate)
     {
         await Task.Yield();
     }
