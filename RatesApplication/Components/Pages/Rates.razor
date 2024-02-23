@@ -24,6 +24,8 @@ else
                 <th>Узел отправления</th>
                 <th>Код узла назначения</th>
                 <th>Узел назначения</th>
+                <th>Код Транспортной группы</th>
+                <th>Транспортная группа</th>
                 <th>Стоимость</th>
             </tr>
         </thead>
@@ -38,6 +40,8 @@ else
                     <td>@rate.NodeFrom?.Name</td>
                     <td>@rate.NodeTo?.Code</td>
                     <td>@rate.NodeTo?.Name</td>
+                    <td>@rate.ProductGroup?.Code</td>
+                    <td>@rate.ProductGroup?.Name</td>
                     <td>@rate.Value</td>
                 </tr>
             }

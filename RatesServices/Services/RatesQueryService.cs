@@ -38,18 +38,18 @@ namespace RatesServices.Services
 
             int rateId = skip;
 
-            var nodeFromInitialIndex = skip / (_nodes.Length + _groups.Length);
+            var nodeFromInitialIndex = skip / (_nodes.Length * _groups.Length);
             for (int nodeFromIndex = nodeFromInitialIndex; nodeFromIndex < _nodes.Length; nodeFromIndex++)
             {
                 var nodeFrom = _nodes[nodeFromIndex];
                 var initialNodeToIndex = nodeFromIndex == nodeFromInitialIndex
-                    ? skip % (_nodes.Length + _groups.Length)
+                    ? (skip/ _groups.Length) % _nodes.Length 
                     : 0;
 
                 for (int nodeToIndex = initialNodeToIndex; nodeToIndex < _nodes.Length; nodeToIndex++)
                 {
                     var initialGroupIndex = nodeFromIndex == nodeFromInitialIndex && nodeToIndex == initialNodeToIndex
-                        ? skip % _nodes.Length
+                        ? skip % _groups.Length
                         : 0;
 
                     for (int groupIndex = initialGroupIndex; groupIndex < _groups.Length; groupIndex++)

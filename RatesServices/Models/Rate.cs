@@ -10,11 +10,11 @@ public class Rate
 
     public DateOnly EndDate { get; set; }
 
-    public LocationNode NodeFrom { get; set; } = default!;
+    public LocationNode? NodeFrom { get; set; }
 
-    public LocationNode NodeTo { get; set; } = default!;
+    public LocationNode? NodeTo { get; set; }
 
-    public ProductGroup ProductGroup { get; set; } = default!;
+    public ProductGroup? ProductGroup { get; set; }
     public decimal Value { get; set; }
 
     public bool IsDeflated { get; set; }
