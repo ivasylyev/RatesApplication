@@ -1,4 +1,4 @@
-namespace Sibur.Digital.Svt.Nkhtk.UI.Config
+namespace RatesApplication.Config
 {
     public class UiOptions
     {

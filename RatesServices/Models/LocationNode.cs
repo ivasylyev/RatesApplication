@@ -1,4 +1,4 @@
-﻿namespace RatesModels;
+﻿namespace RatesServices.Models;
 
 public class LocationNode
 {
@@ -14,4 +14,8 @@ public class LocationNode
     public string Code { get; }
 
     public string Name { get; }
+    public override string ToString()
+    {
+        return $"{Id} {Code} {Name}";
+    }
 }

@@ -1,8 +1,8 @@
 using RatesApplication.Components;
 using RatesKafkaAdapter;
 using RatesServices;
+using RatesServices.Services;
 using Serilog;
-using Sibur.Digital.Svt.Nkhtk.UI.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 

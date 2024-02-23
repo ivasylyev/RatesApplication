@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace RatesServices;
+namespace RatesServices.Services;
 
 public class Service
 {

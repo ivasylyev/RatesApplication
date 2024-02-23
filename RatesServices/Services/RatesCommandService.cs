@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using RatesModels;
+using RatesServices.Models;
 
-
-namespace RatesServices;
+namespace RatesServices.Services;
 
 public class RatesCommandService : Service, IRatesCommandService
 {

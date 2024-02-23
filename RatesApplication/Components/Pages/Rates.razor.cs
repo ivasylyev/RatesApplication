@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
-using RatesServices;
+using RatesServices.Models;
+using RatesServices.Services;
 
 namespace RatesApplication.Components.Pages;
 
@@ -11,7 +12,7 @@ public partial class Rates
     [Inject] 
     private IRatesQueryService RatesQueryService { get; set; } = default!;
 
-    private RatesModels.Rate[]? _rates;
+    private Rate[]? _rates;
     private int _rateCount;
     private int _currentPageNumber = 1;
 

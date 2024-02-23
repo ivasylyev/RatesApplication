@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using RatesDto;
 using RatesKafkaAdapter;
 using RatesServices;
+using RatesServices.Services;
 
 namespace RatesApplication.Components.Pages;
 

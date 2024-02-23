@@ -1,6 +1,6 @@
-﻿using RatesModels;
+﻿using RatesServices.Models;
 
-namespace RatesServices;
+namespace RatesServices.Services;
 
 public interface IRatesQueryService
 {
