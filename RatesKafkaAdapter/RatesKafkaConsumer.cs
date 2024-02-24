@@ -1,115 +1,148 @@
-﻿//using Confluent.Kafka;
-//using Confluent.SchemaRegistry.Serdes;
-//using Confluent.SchemaRegistry;
-//using RatesModels;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+﻿using Confluent.Kafka;
+using Confluent.SchemaRegistry.Serdes;
+using Confluent.SchemaRegistry;
+using RatesModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 
 
-//using Confluent.Kafka.SyncOverAsync;
+using Confluent.Kafka.SyncOverAsync;
 
 
-//using System.ComponentModel.DataAnnotations;
-//using System.Threading;
-//using System.Threading.Tasks;
-//using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using RatesDto;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
-//namespace RatesKafkaAdapter
-//{
-//    public class RatesKafkaConsumer 
-//    {
-//        public async Task SendRates(Rate rate)
-//        {
-//            await Task.Yield();
-//        }
+namespace RatesKafkaAdapter
+{
+    public class RatesKafkaConsumer : KafkaService, IDisposable
+    {
+        private readonly IConsumer<Null, string> _consumer;
+        public RatesKafkaConsumer(IOptions<KafkaOptions> options, ILogger<KafkaService> logger) : base(options, logger)
+        {
+            var config = new ConsumerConfig
+            {
+                GroupId = "test-consumer-group",
+                BootstrapServers = Options.BrokerList,
+                AutoOffsetReset = AutoOffsetReset.Earliest
+            };
 
+            _consumer = new ConsumerBuilder<Null, string>(config).Build();
+            Logger.LogInformation($"{_consumer.Name} consuming on {Options.RatesForCalculationTopicName}.");
+        }
+
+        protected Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            return Task.Run(() => StartConsumerLoop(stoppingToken), stoppingToken);
+        }
+
+
+
+        public static void Main(string[] args)
+        {
+            var conf = new ConsumerConfig
+            {
+                GroupId = "test-consumer-group",
+                BootstrapServers = "localhost:9092",
+                // Note: The AutoOffsetReset property determines the start offset in the event
+                // there are not yet any committed offsets for the consumer group for the
+                // topic/partitions of interest. By default, offsets are committed
+                // automatically, so in this example, consumption will only start from the
+                // earliest message in the topic 'my-topic' the first time you run the program.
+                AutoOffsetReset = AutoOffsetReset.Earliest
+            };
+
+            using (var c = new ConsumerBuilder<Ignore, string>(conf).Build())
+            {
+                c.Subscribe("my-topic");
+
+                CancellationTokenSource cts = new CancellationTokenSource();
+                Console.CancelKeyPress += (_, e) => {
+                    e.Cancel = true; // prevent the process from terminating.
+                    cts.Cancel();
+                };
+
+                try
+                {
+                    while (true)
+                    {
+                        try
+                        {
+                            var cr = c.Consume(cts.Token);
+                            Console.WriteLine($"Consumed message '{cr.Value}' at: '{cr.TopicPartitionOffset}'.");
+                        }
+                        catch (ConsumeException e)
+                        {
+                            Console.WriteLine($"Error occured: {e.Error.Reason}");
+                        }
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    // Ensure the consumer leaves the group cleanly and final offsets are committed.
+                    c.Close();
+                }
+            }
+        }
+
+       
+            private readonly string topic;
+           
+
+          
+
+           
+            private void StartConsumerLoop(CancellationToken cancellationToken)
+            {
+                kafkaConsumer.Subscribe(this.topic);
+
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    try
+                    {
+                        var cr = this.kafkaConsumer.Consume(cancellationToken);
+
+                        // Handle message...
+                        Console.WriteLine($"{cr.Message.Key}: {cr.Message.Value}ms");
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        break;
+                    }
+                    catch (ConsumeException e)
+                    {
+                        // Consumer errors should generally be ignored (or logged) unless fatal.
+                        Console.WriteLine($"Consume error: {e.Error.Reason}");
+
+                        if (e.Error.IsFatal)
+                        {
+                            // https://github.com/edenhill/librdkafka/blob/master/INTRODUCTION.md#fatal-consumer-errors
+                            break;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Unexpected error: {e}");
+                        break;
+                    }
+                }
+            }
+
+            public  void Dispose()
+            {
+                this.kafkaConsumer.Close(); // Commit offsets and leave the group cleanly.
+                this.kafkaConsumer.Dispose();
+
+            }
         
-//             async Task Main()
-//            {
-               
-
-//                string bootstrapServers = "My_Server";
-//                string schemaRegistryUrl = "http://json-schema.org/draft-07/schema#";
-//                string topicName = "My_Topic";
-
-//                var producerConfig = new ProducerConfig
-//                {
-//                    BootstrapServers = bootstrapServers
-//                };
-
-//                var schemaRegistryConfig = new SchemaRegistryConfig
-//                {
-//                    // Note: you can specify more than one schema registry url using the
-//                    // schema.registry.url property for redundancy (comma separated list). 
-//                    // The property name is not plural to follow the convention set by
-//                    // the Java implementation.
-//                    Url = schemaRegistryUrl
-//                };
-
-//                var consumerConfig = new ConsumerConfig
-//                {
-//                    BootstrapServers = bootstrapServers,
-//                    GroupId = "json-example-consumer-group"
-//                };
-
-//                // Note: Specifying json serializer configuration is optional.
-//                var jsonSerializerConfig = new JsonSerializerConfig
-//                {
-//                    BufferBytes = 100
-//                };
-            
-//                CancellationTokenSource cts = new CancellationTokenSource();
-//                var consumeTask = Task.Run(() =>
-//                {
-//                    using (var consumer =
-//                        new ConsumerBuilder<string, Rate>(consumerConfig)
-//                            .SetKeyDeserializer(Deserializers.Utf8)
-//                            .SetValueDeserializer(new JsonDeserializer<Rate>().AsSyncOverAsync())
-//                            .SetErrorHandler((_, e) => Console.WriteLine($"Error: {e.Reason}"))
-//                            .Build())
-//                    {
-//                        consumer.Subscribe(topicName);
-
-//                        try
-//                        {
-//                            while (true)
-//                            {
-//                                try
-//                                {
-//                                    var cr = consumer.Consume(cts.Token);
-//                                    var user = cr.Message.Value;
-//                                    //Console.WriteLine($"user name: {user.Name}, favorite number: {user.FavoriteNumber}, favorite color: {user.FavoriteColor}");
-//                                }
-//                                catch (ConsumeException e)
-//                                {
-//                                    Console.WriteLine($"Consume error: {e.Error.Reason}");
-//                                }
-//                            }
-//                        }
-//                        catch (OperationCanceledException)
-//                        {
-//                            consumer.Close();
-//                        }
-//                    }
-//                });
-
-                
-
-               
-
-//                using (var schemaRegistry = new CachedSchemaRegistryClient(schemaRegistryConfig))
-//                {
-//                    // Note: a subject name strategy was not configured, so the default "Topic" was used.
-//                    var schema = await schemaRegistry.GetLatestSchemaAsync(SubjectNameStrategy.Topic.ConstructValueSubjectName(topicName));
-//                    Console.WriteLine("\nThe JSON schema corresponding to the written data:");
-//                    Console.WriteLine(schema.SchemaString);
-//                }
-//            }
-        
-
-//    }
-//}
+}

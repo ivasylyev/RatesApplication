@@ -14,7 +14,7 @@ public class RatesKafkaProducer : KafkaService, IRatesKafkaProducer
     {
         var config = new ProducerConfig { BootstrapServers = Options.BrokerList };
         _producer = new ProducerBuilder<Null, string>(config).Build();
-        Logger.LogInformation($"{_producer.Name} producing on {Options.RatesOutTopicName}.");
+        Logger.LogInformation($"{_producer.Name} producing on {Options.RatesForCalculationTopicName}.");
     }
 
     public void SendRates(IEnumerable<RateDto> rates, CancellationToken ct)
@@ -27,7 +27,7 @@ public class RatesKafkaProducer : KafkaService, IRatesKafkaProducer
                     break;
                 var value = JsonConvert.SerializeObject(rate);
                 var message = new Message<Null, string> { Value = value };
-                _producer.Produce(Options.RatesOutTopicName, message, DeliveryHandler);
+                _producer.Produce(Options.RatesForCalculationTopicName, message, DeliveryHandler);
             }
 
             _producer.Flush(TimeSpan.FromSeconds(Options.CoolDownIntervalSec));
