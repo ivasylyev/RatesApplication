@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RatesDto\Vasiliev.Idp.Dto.csproj" />
+    <ProjectReference Include="..\Vasiliev.Idp.Dto\Vasiliev.Idp.Dto.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,11 +5,11 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RatesApplication", "RatesApplication\RatesApplication.csproj", "{99A82314-9BA3-486A-8225-873F9BFAB7CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vasiliev.Idp.Dto", "RatesDto\Vasiliev.Idp.Dto.csproj", "{823FD0E8-08BB-4C71-AE1F-A0F5B1FA0F95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vasiliev.Idp.Dto", "Vasiliev.Idp.Dto\Vasiliev.Idp.Dto.csproj", "{823FD0E8-08BB-4C71-AE1F-A0F5B1FA0F95}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RatesCalculator", "RatesCalculator\RatesCalculator.csproj", "{85F002C0-85FE-4472-BB06-0FBC2D46FEF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vasiliev.Idp.Command", "Vasylyev.Idp.Command\Vasiliev.Idp.Command.csproj", "{727CDB86-EB23-4A14-B49D-818FEE6E8341}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vasiliev.Idp.Command", "Vasiliev.Idp.Command\Vasiliev.Idp.Command.csproj", "{727CDB86-EB23-4A14-B49D-818FEE6E8341}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
