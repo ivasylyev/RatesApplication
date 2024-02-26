@@ -1,10 +1,10 @@
 ﻿using Confluent.Kafka;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using RatesApplication.Config;
 using Vasiliev.Idp.Dto;
+using Vasiliev.Idp.Orchestrator.Config;
 
-namespace RatesApplication.Services;
+namespace Vasiliev.Idp.Orchestrator.Services;
 
 public class RatesKafkaProducer : IRatesKafkaProducer
 {

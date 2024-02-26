@@ -2,9 +2,8 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using static Confluent.Kafka.ConfigPropertyNames;
 
-namespace RatesCalculator;
+namespace Vasiliev.Idp.Calculator;
 
 public class Worker : BackgroundService
 {

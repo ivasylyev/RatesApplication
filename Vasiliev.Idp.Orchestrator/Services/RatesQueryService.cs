@@ -1,6 +1,6 @@
-﻿using RatesApplication.Models;
+﻿using Vasiliev.Idp.Orchestrator.Models;
 
-namespace RatesApplication.Services
+namespace Vasiliev.Idp.Orchestrator.Services
 {
     public class RatesQueryService :  IRatesQueryService
     {

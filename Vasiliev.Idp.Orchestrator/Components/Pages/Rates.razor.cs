@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
-using RatesApplication.Models;
-using RatesApplication.Services;
+using Vasiliev.Idp.Orchestrator.Models;
+using Vasiliev.Idp.Orchestrator.Services;
 
-namespace RatesApplication.Components.Pages;
+namespace Vasiliev.Idp.Orchestrator.Components.Pages;
 
 public partial class Rates
 {

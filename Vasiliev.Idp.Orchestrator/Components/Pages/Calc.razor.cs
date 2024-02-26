@@ -1,9 +1,9 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Components;
-using RatesApplication.Services;
 using Vasiliev.Idp.Dto;
+using Vasiliev.Idp.Orchestrator.Services;
 
-namespace RatesApplication.Components.Pages;
+namespace Vasiliev.Idp.Orchestrator.Components.Pages;
 
 public partial class Calc
 {

@@ -1,4 +1,4 @@
-﻿namespace RatesApplication.Models;
+﻿namespace Vasiliev.Idp.Orchestrator.Models;
 
 public class Rate
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RatesCalculator;
 using Serilog;
+using Vasiliev.Idp.Calculator;
 
 HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 

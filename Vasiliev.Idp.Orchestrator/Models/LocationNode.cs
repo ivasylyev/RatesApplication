@@ -1,8 +1,8 @@
-﻿namespace RatesApplication.Models;
+﻿namespace Vasiliev.Idp.Orchestrator.Models;
 
-public class ProductGroup
+public class LocationNode
 {
-    public ProductGroup(long id, string code, string name)
+    public LocationNode(long id, string code, string name)
     {
         Id = id;
         Code = code;
@@ -14,7 +14,6 @@ public class ProductGroup
     public string Code { get; }
 
     public string Name { get; }
-
     public override string ToString()
     {
         return $"{Id} {Code} {Name}";

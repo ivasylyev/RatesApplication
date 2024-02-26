@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vasiliev.Idp.Orchestrator", "Vasiliev.Idp.Orchestrator\Vasiliev.Idp.Orchestrator.csproj", "{99A82314-9BA3-486A-8225-873F9BFAB7CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vasiliev.Idp.Orchestrator", "RatesApplication\Vasiliev.Idp.Orchestrator.csproj", "{99A82314-9BA3-486A-8225-873F9BFAB7CD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vasiliev.Idp.Dto", "Vasiliev.Idp.Dto\Vasiliev.Idp.Dto.csproj", "{823FD0E8-08BB-4C71-AE1F-A0F5B1FA0F95}"
 EndProject

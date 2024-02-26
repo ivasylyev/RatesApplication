@@ -1,4 +1,4 @@
-namespace RatesApplication.Config
+namespace Vasiliev.Idp.Orchestrator.Config
 {
     public class UiOptions
     {
