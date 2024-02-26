@@ -19,7 +19,6 @@
   <ItemGroup>
     <ProjectReference Include="..\RatesDto\RatesDto.csproj" />
     <ProjectReference Include="..\RatesKafkaAdapter\RatesKafkaAdapter.csproj" />
-    <ProjectReference Include="..\RatesServices\RatesServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿namespace RatesServices.Models;
+﻿namespace RatesApplication.Models;
 
 public class LocationNode
 {

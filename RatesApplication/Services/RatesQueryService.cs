@@ -1,7 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
-using RatesServices.Models;
+﻿using RatesApplication.Models;
 
-namespace RatesServices.Services
+namespace RatesApplication.Services
 {
     public class RatesQueryService :  IRatesQueryService
     {
@@ -19,8 +18,8 @@ namespace RatesServices.Services
         private readonly ProductGroup[] _groups;
 
   
-        protected ILogger<Service> Logger { get; }
-        public RatesQueryService(ILogger<Service> logger) 
+        protected ILogger<RatesQueryService> Logger { get; }
+        public RatesQueryService(ILogger<RatesQueryService> logger) 
         {
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 

@@ -1,7 +1,6 @@
 using RatesApplication.Components;
+using RatesApplication.Services;
 using RatesKafkaAdapter;
-using RatesServices;
-using RatesServices.Services;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

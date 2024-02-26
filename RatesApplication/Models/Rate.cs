@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace RatesServices.Models;
+﻿namespace RatesApplication.Models;
 
 public class Rate
 {

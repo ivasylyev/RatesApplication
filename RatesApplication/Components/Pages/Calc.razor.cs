@@ -1,9 +1,8 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Components;
+using RatesApplication.Services;
 using RatesDto;
 using RatesKafkaAdapter;
-using RatesServices;
-using RatesServices.Services;
 
 namespace RatesApplication.Components.Pages;
 

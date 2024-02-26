@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
-using RatesServices.Models;
-using RatesServices.Services;
+using RatesApplication.Models;
+using RatesApplication.Services;
 
 namespace RatesApplication.Components.Pages;
 
