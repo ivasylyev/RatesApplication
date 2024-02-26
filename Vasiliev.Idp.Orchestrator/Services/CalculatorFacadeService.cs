@@ -1,76 +1,61 @@
 ﻿using Mapster;
-using Microsoft.AspNetCore.Components;
-using System.Threading;
 using Vasiliev.Idp.Dto;
+using Vasiliev.Idp.Orchestrator.Models;
 
-namespace Vasiliev.Idp.Orchestrator.Services
+namespace Vasiliev.Idp.Orchestrator.Services;
+
+public class CalculatorFacadeService
 {
-    public class CalculatorFacadeService
+    private int _bufferSize = 100;
+    private IKafkaProducerService KafkaProducerService { get; }
+
+    private IQueryService QueryService { get; }
+
+    public CalculatorFacadeService(IKafkaProducerService kafkaProducerService, IQueryService queryService)
     {
-        private int _bufferSize = 100;
-        private int _currentCount;
-        private IKafkaProducerService KafkaProducerService { get; }
+        KafkaProducerService = kafkaProducerService;
+        QueryService = queryService;
+    }
 
+    public async Task SendToKafka(Action<int> updateProgress, CancellationToken ct)
+    {
+        var rateCount = await QueryService.GetRateCountAsync();
+        var rates = QueryService.GetRatesAsync();
+        var rateDtoBuffer = new List<RateDto>(_bufferSize);
 
-        private IQueryService QueryService { get; }
+        var progress = new KafkaProgress(rateCount);
 
-        public CalculatorFacadeService(IKafkaProducerService kafkaProducerService, IQueryService queryService)
+        await foreach (var rate in rates)
         {
-            KafkaProducerService = kafkaProducerService;
-            QueryService = queryService;
-        }
-
-        public async Task SendToKafka(Action<int> updateProgress, CancellationToken ct)
-        {
-            _currentCount = 0;
-            var count = 0;
-
-            var rateCount = await QueryService.GetRateCountAsync();
-            var rates = QueryService.GetRatesAsync();
-            var rateDtoBuffer = new List<RateDto>(_bufferSize);
-
-            await foreach (var rate in rates)
+            var rateDto = rate.Adapt<RateDto>();
+            rateDtoBuffer.Add(rateDto);
+            if (rateDtoBuffer.Count == _bufferSize)
             {
-                var rateDto = rate.Adapt<RateDto>();
-                rateDtoBuffer.Add(rateDto);
-                if (rateDtoBuffer.Count == _bufferSize)
+                if (ct.IsCancellationRequested)
                 {
-                    if (ct.IsCancellationRequested)
-                    {
-                        _currentCount = 0;
-                        break;
-                    }
-
-                    KafkaProducerService.SendRates(rateDtoBuffer, ct);
-                    if (UpdateProgressInternal(updateProgress, ref count, rateDtoBuffer.Count, rateCount))
-                    {
-                        // Даем шанс потоку UI отрисовать измененения
-                        await Task.Yield();
-                    }
-
+                    progress.Reset();
                     rateDtoBuffer.Clear();
+                    break;
                 }
-            }
 
-            if (rateDtoBuffer.Any())
-            {
                 KafkaProducerService.SendRates(rateDtoBuffer, ct);
-                UpdateProgressInternal(updateProgress, ref count, rateDtoBuffer.Count, rateCount);
+                await UpdateProgressInternal(updateProgress, progress, rateDtoBuffer.Count);
+                rateDtoBuffer.Clear();
             }
         }
 
-        private bool UpdateProgressInternal(Action<int> updateProgress, ref int count, int delta, int totalCount)
-        {
-            count += delta;
-            var newCount = 100 * count / totalCount;
-            bool hasChanged = _currentCount != newCount;
-            if (hasChanged)
-            {
-                updateProgress(_currentCount);
-            }
+        if (rateDtoBuffer.Any()) KafkaProducerService.SendRates(rateDtoBuffer, ct);
 
-            _currentCount = newCount;
-            return hasChanged;
+        await UpdateProgressInternal(updateProgress, progress, rateDtoBuffer.Count);
+    }
+
+    private async Task UpdateProgressInternal(Action<int> updateProgress, KafkaProgress progress, int delta)
+    {
+        if (progress.Increment(delta))
+        {
+            updateProgress(progress.CurrentProgress);
+            // Даем шанс потоку UI отрисовать измененения
+            await Task.Yield();
         }
     }
 }

@@ -12,6 +12,7 @@ builder.Services.AddRazorComponents()
 builder.Services.Configure<KafkaOptions>(builder.Configuration.GetSection(KafkaOptions.Kafka));
 builder.Services.AddSingleton<IQueryService, QueryService>();
 builder.Services.AddSingleton<IKafkaProducerService, KafkaProducerService>();
+builder.Services.AddSingleton<CalculatorFacadeService>();
 
 var logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
