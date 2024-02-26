@@ -2,29 +2,30 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Vasiliev.Idp.Calculator.Config;
 
-namespace Vasiliev.Idp.Calculator;
+namespace Vasiliev.Idp.Calculator.Services;
 
-public class Worker : BackgroundService
+public class ConsumerWorker : BackgroundService
 {
     private readonly IConsumer<Null, string> _consumer;
-    protected ILogger<Worker> Logger { get; }
+    protected ILogger<ConsumerWorker> Logger { get; }
     protected KafkaOptions Options { get; }
 
-    public Worker(IOptions<KafkaOptions> options, ILogger<Worker> logger)
+    public ConsumerWorker(IOptions<KafkaOptions> options, ILogger<ConsumerWorker> logger)
     {
         Options = options.Value ?? throw new ArgumentNullException(nameof(options), $"{nameof(options)} doesn't have Value");
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         var config = new ConsumerConfig
         {
-            GroupId = "test-consumer-group2",
+            GroupId = "test-consumer-group3",
             BootstrapServers = Options.BrokerList,
             AutoOffsetReset = AutoOffsetReset.Earliest
         };
 
         _consumer = new ConsumerBuilder<Null, string>(config).Build();
-        
+
     }
 
     protected override async Task ExecuteAsync(CancellationToken ct)
@@ -34,7 +35,7 @@ public class Worker : BackgroundService
 
     private void StartConsumerLoop(CancellationToken cancellationToken)
     {
-       // _consumer.Subscribe(Options.RatesForCalculationTopicName);
+        // _consumer.Subscribe(Options.RatesForCalculationTopicName);
         _consumer.Assign(new TopicPartition(Options.RatesForCalculationTopicName, Options.RatesForCalculationPartition));
 
         while (!cancellationToken.IsCancellationRequested)
@@ -42,7 +43,7 @@ public class Worker : BackgroundService
             try
             {
                 var consumeResult = _consumer.Consume(cancellationToken);
-                
+
                 Logger.LogTrace($"{consumeResult.Message.Key}: {consumeResult.Message.Value}");
             }
             catch (OperationCanceledException)

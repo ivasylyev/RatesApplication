@@ -6,12 +6,12 @@ using Vasiliev.Idp.Orchestrator.Config;
 
 namespace Vasiliev.Idp.Orchestrator.Services;
 
-public class RatesKafkaProducer : IRatesKafkaProducer
+public class KafkaProducer : IKafkaProducer
 {
     private readonly IProducer<Null, string> _producer;
     protected KafkaOptions Options { get; }
-    protected ILogger<RatesKafkaProducer> Logger { get; }
-    public RatesKafkaProducer(IOptions<KafkaOptions> options, ILogger<RatesKafkaProducer> logger) 
+    protected ILogger<KafkaProducer> Logger { get; }
+    public KafkaProducer(IOptions<KafkaOptions> options, ILogger<KafkaProducer> logger) 
     {
         Options = options.Value ?? throw new ArgumentNullException(nameof(options), $"{nameof(options)} doesn't have Value");
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));

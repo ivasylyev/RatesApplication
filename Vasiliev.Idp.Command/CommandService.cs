@@ -3,14 +3,14 @@ using Vasiliev.Idp.Dto;
 
 namespace Vasiliev.Idp.Command;
 
-public class RatesCommandService : IRatesCommandService
+public class CommandService : ICommandService
 {
-    protected RatesCommandService(ILogger<RatesCommandService> logger)
+    protected CommandService(ILogger<CommandService> logger)
     {
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
-    protected ILogger<RatesCommandService> Logger { get; }
+    protected ILogger<CommandService> Logger { get; }
     public async Task SaveRate(RateDto rate)
     {
         await Task.Yield();

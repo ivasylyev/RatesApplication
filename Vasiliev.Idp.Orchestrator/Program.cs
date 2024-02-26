@@ -10,8 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.Configure<KafkaOptions>(builder.Configuration.GetSection(KafkaOptions.Kafka));
-builder.Services.AddSingleton<IRatesQueryService, RatesQueryService>();
-builder.Services.AddSingleton<IRatesKafkaProducer, RatesKafkaProducer>();
+builder.Services.AddSingleton<IQueryService, QueryService>();
+builder.Services.AddSingleton<IKafkaProducer, KafkaProducer>();
 
 var logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)

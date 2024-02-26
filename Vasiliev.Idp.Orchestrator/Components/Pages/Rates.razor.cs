@@ -10,7 +10,7 @@ public partial class Rates
     bool _skipped;
 
     [Inject] 
-    private IRatesQueryService RatesQueryService { get; set; } = default!;
+    private IQueryService QueryService { get; set; } = default!;
 
     private Rate[]? _rates;
     private int _rateCount;
@@ -18,13 +18,13 @@ public partial class Rates
 
     protected override async Task OnInitializedAsync()
     {
-        _rates = await RatesQueryService.GetRatesAsync(PageSize).ToArrayAsync();
-        _rateCount = await RatesQueryService.GetRateCountAsync();
+        _rates = await QueryService.GetRatesAsync(PageSize).ToArrayAsync();
+        _rateCount = await QueryService.GetRateCountAsync();
     }
 
     private async Task PageSelected(int page)
     {
         _currentPageNumber = page;
-        _rates = await RatesQueryService.GetRatesAsync(PageSize, (page - 1) * PageSize).ToArrayAsync();
+        _rates = await QueryService.GetRatesAsync(PageSize, (page - 1) * PageSize).ToArrayAsync();
     }
 }

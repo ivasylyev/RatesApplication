@@ -12,10 +12,10 @@ public partial class Calc
     private CancellationTokenSource _cancellationTokenSource = new();
 
     [Inject] 
-    private IRatesKafkaProducer KafkaProducer { get; set; } = default!;
+    private IKafkaProducer KafkaProducer { get; set; } = default!;
 
     [Inject] 
-    private IRatesQueryService RatesQueryService { get; set; } = default!;
+    private IQueryService QueryService { get; set; } = default!;
 
     private bool IsSending => _currentCount == 0 || _currentCount == 100;
 
@@ -39,8 +39,8 @@ public partial class Calc
         _currentCount = 0;
         var count = 0;
 
-        var rateCount = await RatesQueryService.GetRateCountAsync();
-        var rates = RatesQueryService.GetRatesAsync();
+        var rateCount = await QueryService.GetRateCountAsync();
+        var rates = QueryService.GetRatesAsync();
         var rateDtoBuffer = new List<RateDto>(_bufferSize);
    
         await foreach (var rate in rates)

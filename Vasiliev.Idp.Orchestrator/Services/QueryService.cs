@@ -2,7 +2,7 @@
 
 namespace Vasiliev.Idp.Orchestrator.Services
 {
-    public class RatesQueryService :  IRatesQueryService
+    public class QueryService :  IQueryService
     {
         private readonly string[] _cities =
         {
@@ -18,8 +18,8 @@ namespace Vasiliev.Idp.Orchestrator.Services
         private readonly ProductGroup[] _groups;
 
   
-        protected ILogger<RatesQueryService> Logger { get; }
-        public RatesQueryService(ILogger<RatesQueryService> logger) 
+        protected ILogger<QueryService> Logger { get; }
+        public QueryService(ILogger<QueryService> logger) 
         {
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 

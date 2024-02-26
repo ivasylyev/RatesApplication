@@ -2,7 +2,7 @@
 
 namespace Vasiliev.Idp.Command;
 
-public interface IRatesCommandService
+public interface ICommandService
 {
     Task SaveRate(RateDto rate);
 }

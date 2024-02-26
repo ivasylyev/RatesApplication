@@ -1,4 +1,4 @@
-﻿namespace Vasiliev.Idp.Calculator;
+﻿namespace Vasiliev.Idp.Calculator.Config;
 
 public class KafkaOptions
 {

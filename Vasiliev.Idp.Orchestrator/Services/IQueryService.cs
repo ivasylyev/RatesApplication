@@ -2,7 +2,7 @@
 
 namespace Vasiliev.Idp.Orchestrator.Services;
 
-public interface IRatesQueryService
+public interface IQueryService
 {
     IAsyncEnumerable<Rate> GetRatesAsync(int take = int.MaxValue, int skip = 0);
     Task<int> GetRateCountAsync();

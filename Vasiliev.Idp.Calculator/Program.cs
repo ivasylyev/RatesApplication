@@ -1,12 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Vasiliev.Idp.Calculator;
+using Vasiliev.Idp.Calculator.Config;
+using Vasiliev.Idp.Calculator.Services;
 
 HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
 builder.Services.Configure<KafkaOptions>(builder.Configuration.GetSection(KafkaOptions.Kafka));
-builder.Services.AddHostedService<Worker>();
+builder.Services.AddHostedService<ConsumerWorker>();
 
 var logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
