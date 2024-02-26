@@ -1,17 +1,21 @@
 ﻿using Confluent.Kafka;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using RatesDto;
+using RatesApplication.Config;
+using Vasiliev.Idp.Dto;
 
-namespace RatesKafkaAdapter;
+namespace RatesApplication.Services;
 
-public class RatesKafkaProducer : KafkaService, IRatesKafkaProducer
+public class RatesKafkaProducer : IRatesKafkaProducer
 {
     private readonly IProducer<Null, string> _producer;
-
-    public RatesKafkaProducer(IOptions<KafkaOptions> options, ILogger<KafkaService> logger) : base(options, logger)
+    protected KafkaOptions Options { get; }
+    protected ILogger<RatesKafkaProducer> Logger { get; }
+    public RatesKafkaProducer(IOptions<KafkaOptions> options, ILogger<RatesKafkaProducer> logger) 
     {
+        Options = options.Value ?? throw new ArgumentNullException(nameof(options), $"{nameof(options)} doesn't have Value");
+        Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
         var config = new ProducerConfig { BootstrapServers = Options.BrokerList };
         _producer = new ProducerBuilder<Null, string>(config).Build();
         Logger.LogInformation($"{_producer.Name} producing on {Options.RatesForCalculationTopicName}.");

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace RatesDto;
+namespace Vasiliev.Idp.Dto;
 
 public class RateDto
 {

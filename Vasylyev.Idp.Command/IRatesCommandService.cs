@@ -1,4 +1,4 @@
-﻿using RatesDto;
+﻿using Vasiliev.Idp.Dto;
 
 namespace Vasiliev.Idp.Command;
 

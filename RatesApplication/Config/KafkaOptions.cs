@@ -1,4 +1,4 @@
-﻿namespace RatesKafkaAdapter;
+﻿namespace RatesApplication.Config;
 
 public class KafkaOptions
 {

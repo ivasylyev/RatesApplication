@@ -5,9 +5,7 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RatesApplication", "RatesApplication\RatesApplication.csproj", "{99A82314-9BA3-486A-8225-873F9BFAB7CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RatesKafkaAdapter", "RatesKafkaAdapter\RatesKafkaAdapter.csproj", "{C6239439-AD4F-49FB-95EA-DA03E0E1ABB3}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RatesDto", "RatesDto\RatesDto.csproj", "{823FD0E8-08BB-4C71-AE1F-A0F5B1FA0F95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vasiliev.Idp.Dto", "RatesDto\Vasiliev.Idp.Dto.csproj", "{823FD0E8-08BB-4C71-AE1F-A0F5B1FA0F95}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RatesCalculator", "RatesCalculator\RatesCalculator.csproj", "{85F002C0-85FE-4472-BB06-0FBC2D46FEF1}"
 EndProject
@@ -23,10 +21,6 @@ Global
 		{99A82314-9BA3-486A-8225-873F9BFAB7CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99A82314-9BA3-486A-8225-873F9BFAB7CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99A82314-9BA3-486A-8225-873F9BFAB7CD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6239439-AD4F-49FB-95EA-DA03E0E1ABB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6239439-AD4F-49FB-95EA-DA03E0E1ABB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6239439-AD4F-49FB-95EA-DA03E0E1ABB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6239439-AD4F-49FB-95EA-DA03E0E1ABB3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{823FD0E8-08BB-4C71-AE1F-A0F5B1FA0F95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{823FD0E8-08BB-4C71-AE1F-A0F5B1FA0F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{823FD0E8-08BB-4C71-AE1F-A0F5B1FA0F95}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RatesDto\RatesDto.csproj" />
+    <ProjectReference Include="..\RatesDto\Vasiliev.Idp.Dto.csproj" />
   </ItemGroup>
 
 </Project>

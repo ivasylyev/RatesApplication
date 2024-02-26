@@ -1,5 +1,6 @@
-﻿using RatesDto;
-namespace RatesKafkaAdapter;
+﻿using Vasiliev.Idp.Dto;
+
+namespace RatesApplication.Services;
 
 public interface IRatesKafkaProducer
 {
