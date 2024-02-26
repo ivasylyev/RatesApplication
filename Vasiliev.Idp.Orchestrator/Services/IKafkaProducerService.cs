@@ -2,7 +2,7 @@
 
 namespace Vasiliev.Idp.Orchestrator.Services;
 
-public interface IKafkaProducer
+public interface IKafkaProducerService
 {
     void SendRates(IEnumerable<RateDto> rate, CancellationToken ct);
 }

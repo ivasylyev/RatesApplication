@@ -12,7 +12,7 @@ public partial class Calc
     private CancellationTokenSource _cancellationTokenSource = new();
 
     [Inject] 
-    private IKafkaProducer KafkaProducer { get; set; } = default!;
+    private IKafkaProducerService KafkaProducerService { get; set; } = default!;
 
     [Inject] 
     private IQueryService QueryService { get; set; } = default!;
@@ -56,7 +56,7 @@ public partial class Calc
                     break;
                 }
 
-                KafkaProducer.SendRates(rateDtoBuffer, _cancellationTokenSource.Token);
+                KafkaProducerService.SendRates(rateDtoBuffer, _cancellationTokenSource.Token);
                 if (UpdateProgress(ref count, rateDtoBuffer.Count, rateCount))
                 {
                     // Даем шанс потоку UI отрисовать измененения
@@ -68,7 +68,7 @@ public partial class Calc
         }
         if (rateDtoBuffer.Any())
         {
-            KafkaProducer.SendRates(rateDtoBuffer, _cancellationTokenSource.Token);
+            KafkaProducerService.SendRates(rateDtoBuffer, _cancellationTokenSource.Token);
             UpdateProgress(ref count, rateDtoBuffer.Count, rateCount);
         }
     }
