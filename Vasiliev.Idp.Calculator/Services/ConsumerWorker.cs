@@ -33,16 +33,16 @@ public class ConsumerWorker : BackgroundService
         await Task.Run(() => StartConsumerLoop(ct), ct);
     }
 
-    private void StartConsumerLoop(CancellationToken cancellationToken)
+    private void StartConsumerLoop(CancellationToken ct)
     {
         // _consumer.Subscribe(Options.RatesForCalculationTopicName);
         _consumer.Assign(new TopicPartition(Options.RatesForCalculationTopicName, Options.RatesForCalculationPartition));
 
-        while (!cancellationToken.IsCancellationRequested)
+        while (!ct.IsCancellationRequested)
         {
             try
             {
-                var consumeResult = _consumer.Consume(cancellationToken);
+                var consumeResult = _consumer.Consume(ct);
 
                 Logger.LogTrace($"{consumeResult.Message.Key}: {consumeResult.Message.Value}");
             }
