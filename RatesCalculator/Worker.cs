@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using static Confluent.Kafka.ConfigPropertyNames;
 
 namespace RatesCalculator;
 
@@ -18,12 +19,13 @@ public class Worker : BackgroundService
 
         var config = new ConsumerConfig
         {
-            GroupId = "test-consumer-group",
+            GroupId = "test-consumer-group2",
             BootstrapServers = Options.BrokerList,
             AutoOffsetReset = AutoOffsetReset.Earliest
         };
 
         _consumer = new ConsumerBuilder<Null, string>(config).Build();
+        
     }
 
     protected override async Task ExecuteAsync(CancellationToken ct)
@@ -33,16 +35,16 @@ public class Worker : BackgroundService
 
     private void StartConsumerLoop(CancellationToken cancellationToken)
     {
-        _consumer.Subscribe(Options.RatesForCalculationTopicName);
+       // _consumer.Subscribe(Options.RatesForCalculationTopicName);
+        _consumer.Assign(new TopicPartition(Options.RatesForCalculationTopicName, Options.RatesForCalculationPartition));
 
         while (!cancellationToken.IsCancellationRequested)
         {
             try
             {
                 var consumeResult = _consumer.Consume(cancellationToken);
-
-
-                Logger.LogDebug($"{consumeResult.Message.Key}: {consumeResult.Message.Value}");
+                
+                Logger.LogTrace($"{consumeResult.Message.Key}: {consumeResult.Message.Value}");
             }
             catch (OperationCanceledException)
             {

@@ -8,4 +8,6 @@ public class KafkaOptions
 
     public string? RatesForCalculationTopicName { get; set; }
 
+    public int RatesForCalculationPartition { get; set; }
+
 }
