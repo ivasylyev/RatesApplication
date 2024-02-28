@@ -19,7 +19,7 @@ public class ConsumerWorker : BackgroundService
 
         var config = new ConsumerConfig
         {
-            GroupId = "test-consumer-group3",
+            GroupId = "test-consumer-group4",
             BootstrapServers = Options.BrokerList,
             AutoOffsetReset = AutoOffsetReset.Earliest
         };
@@ -35,14 +35,15 @@ public class ConsumerWorker : BackgroundService
 
     private void StartConsumerLoop(CancellationToken ct)
     {
-        // _consumer.Subscribe(Options.RatesForCalculationTopicName);
-        _consumer.Assign(new TopicPartition(Options.RatesForCalculationTopicName, Options.RatesForCalculationPartition));
+         _consumer.Subscribe(Options.RatesCalcCommandTopicName);
+             // _consumer.Assign(new TopicPartition(Options.RatesCalcDataTopicName, Options.RatesForCalculationPartition));
 
         while (!ct.IsCancellationRequested)
         {
             try
             {
                 var consumeResult = _consumer.Consume(ct);
+                
 
                 Logger.LogTrace($"{consumeResult.Message.Key}: {consumeResult.Message.Value}");
             }

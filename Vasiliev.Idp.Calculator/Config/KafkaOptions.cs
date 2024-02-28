@@ -6,7 +6,8 @@ public class KafkaOptions
 
     public string? BrokerList { get; set; }
 
-    public string? RatesForCalculationTopicName { get; set; }
+    public string RatesCalcDataTopicName { get; set; } = default!;
+    public string RatesCalcCommandTopicName { get; set; } = default!;
 
     public int RatesForCalculationPartition { get; set; }
 

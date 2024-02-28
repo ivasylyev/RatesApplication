@@ -25,6 +25,7 @@ public class CalculatorFacadeService
 
         var progress = new KafkaProgress(rateCount);
 
+        KafkaProducerService.SendCommand(RateCommandDto.StartCalculate, ct);
         await foreach (var rate in rates)
         {
             var rateDto = rate.Adapt<RateDto>();
@@ -44,7 +45,11 @@ public class CalculatorFacadeService
             }
         }
 
-        if (rateDtoBuffer.Any()) KafkaProducerService.SendRates(rateDtoBuffer, ct);
+        if (rateDtoBuffer.Any()) 
+            KafkaProducerService.SendRates(rateDtoBuffer, ct);
+
+        
+        KafkaProducerService.SendCommand(RateCommandDto.EndCalculate, ct);
 
         await UpdateProgressInternal(updateProgress, progress, rateDtoBuffer.Count);
     }
