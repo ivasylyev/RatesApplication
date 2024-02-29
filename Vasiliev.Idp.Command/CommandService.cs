@@ -11,7 +11,7 @@ public class CommandService : ICommandService
     }
 
     protected ILogger<CommandService> Logger { get; }
-    public async Task SaveRate(RateDto rate)
+    public async Task SaveRate(RateDataDto rateData)
     {
         await Task.Yield();
     }

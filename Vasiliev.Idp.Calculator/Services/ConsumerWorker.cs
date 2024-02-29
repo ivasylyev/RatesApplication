@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Vasiliev.Idp.Calculator.Config;
+using Vasiliev.Idp.Dto;
 
 namespace Vasiliev.Idp.Calculator.Services;
 
@@ -35,17 +37,20 @@ public class ConsumerWorker : BackgroundService
 
     private void StartConsumerLoop(CancellationToken ct)
     {
-         _consumer.Subscribe(Options.RatesCalcCommandTopicName);
-             // _consumer.Assign(new TopicPartition(Options.RatesCalcDataTopicName, Options.RatesForCalculationPartition));
+
+        _consumer.Assign(new TopicPartition(Options.RatesCalcTopicName, Options.RatesForCalculationPartition));
 
         while (!ct.IsCancellationRequested)
         {
             try
             {
                 var consumeResult = _consumer.Consume(ct);
-                
 
-                Logger.LogTrace($"{consumeResult.Message.Key}: {consumeResult.Message.Value}");
+                if (consumeResult != null && !string.IsNullOrEmpty(consumeResult.Message?.Value))
+                {
+                    Logger.LogTrace($"{consumeResult.Message.Key}: {consumeResult.Message.Value}");
+                    var message = JsonConvert.DeserializeObject<RateMessageDto>(consumeResult.Message.Value);
+                }
             }
             catch (OperationCanceledException)
             {

@@ -21,14 +21,14 @@ public class CalculatorFacadeService
     {
         var rateCount = await QueryService.GetRateCountAsync();
         var rates = QueryService.GetRatesAsync();
-        var rateDtoBuffer = new List<RateDto>(_bufferSize);
+        var rateDtoBuffer = new List<RateDataDto>(_bufferSize);
 
         var progress = new KafkaProgress(rateCount);
 
         KafkaProducerService.SendCommand(RateCommandDto.StartCalculate, ct);
         await foreach (var rate in rates)
         {
-            var rateDto = rate.Adapt<RateDto>();
+            var rateDto = rate.Adapt<RateDataDto>();
             rateDtoBuffer.Add(rateDto);
             if (rateDtoBuffer.Count == _bufferSize)
             {

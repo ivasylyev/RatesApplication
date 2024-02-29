@@ -2,7 +2,7 @@
 
 public enum RateCommandDto
 {
-    StartCalculate = 0,
-    EndCalculate = 1,
-
+    None = 0,
+    StartCalculate = 1,
+    EndCalculate = 2,
 }

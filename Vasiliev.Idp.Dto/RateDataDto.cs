@@ -2,7 +2,7 @@
 
 namespace Vasiliev.Idp.Dto;
 
-public class RateDto
+public class RateDataDto
 {
     [JsonRequired]
     [JsonProperty("rate_id")]

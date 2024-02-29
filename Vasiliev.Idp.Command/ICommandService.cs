@@ -4,5 +4,5 @@ namespace Vasiliev.Idp.Command;
 
 public interface ICommandService
 {
-    Task SaveRate(RateDto rate);
+    Task SaveRate(RateDataDto rateData);
 }
