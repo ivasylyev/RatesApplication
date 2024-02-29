@@ -8,14 +8,17 @@ using Vasiliev.Idp.Dto;
 
 namespace Vasiliev.Idp.Calculator.Services;
 
-public class ConsumerWorker : BackgroundService
+public sealed class ConsumerWorker : BackgroundService
 {
-    private readonly IConsumer<Null, string> _consumer;
-    protected ILogger<ConsumerWorker> Logger { get; }
-    protected KafkaOptions Options { get; }
+    private  IConsumer<Null, string> Consumer { get; }
+    private ILogger<ConsumerWorker> Logger { get; }
+    private KafkaOptions Options { get; }
 
-    public ConsumerWorker(IOptions<KafkaOptions> options, ILogger<ConsumerWorker> logger)
+    private IMessageProcessor Processor { get; }
+
+    public ConsumerWorker(IMessageProcessor processor, IOptions<KafkaOptions> options, ILogger<ConsumerWorker> logger)
     {
+        Processor = processor ?? throw new ArgumentNullException(nameof(processor));
         Options = options.Value ?? throw new ArgumentNullException(nameof(options), $"{nameof(options)} doesn't have Value");
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -26,7 +29,7 @@ public class ConsumerWorker : BackgroundService
             AutoOffsetReset = AutoOffsetReset.Earliest
         };
 
-        _consumer = new ConsumerBuilder<Null, string>(config).Build();
+        Consumer = new ConsumerBuilder<Null, string>(config).Build();
 
     }
 
@@ -38,18 +41,19 @@ public class ConsumerWorker : BackgroundService
     private void StartConsumerLoop(CancellationToken ct)
     {
 
-        _consumer.Assign(new TopicPartition(Options.RatesCalcTopicName, Options.RatesForCalculationPartition));
+        Consumer.Assign(new TopicPartition(Options.RatesCalcTopicName, Options.RatesForCalculationPartition));
 
         while (!ct.IsCancellationRequested)
         {
             try
             {
-                var consumeResult = _consumer.Consume(ct);
+                var consumeResult = Consumer.Consume(ct);
 
                 if (consumeResult != null && !string.IsNullOrEmpty(consumeResult.Message?.Value))
                 {
                     Logger.LogTrace($"{consumeResult.Message.Key}: {consumeResult.Message.Value}");
                     var message = JsonConvert.DeserializeObject<RateMessageDto>(consumeResult.Message.Value);
+                    Processor.Process(message);
                 }
             }
             catch (OperationCanceledException)
@@ -76,8 +80,8 @@ public class ConsumerWorker : BackgroundService
 
     public override void Dispose()
     {
-        _consumer.Close(); // Commit offsets and leave the group cleanly.
-        _consumer.Dispose();
+        Consumer.Close(); // Commit offsets and leave the group cleanly.
+        Consumer.Dispose();
 
         base.Dispose();
     }

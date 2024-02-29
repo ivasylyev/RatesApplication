@@ -8,6 +8,7 @@ HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
 builder.Services.Configure<KafkaOptions>(builder.Configuration.GetSection(KafkaOptions.Kafka));
 builder.Services.AddHostedService<ConsumerWorker>();
+builder.Services.AddSingleton<IMessageProcessor, MessageProcessor>();
 
 var logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
