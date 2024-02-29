@@ -8,7 +8,6 @@ public class RateMessageDto
     [JsonProperty("command")]
     public RateCommandDto Command { get; set; }
 
-    [JsonRequired] 
     [JsonProperty("data")] 
     public RateDataDto? Data { get; set; }
 
