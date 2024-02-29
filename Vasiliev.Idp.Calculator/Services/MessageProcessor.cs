@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Confluent.Kafka;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Vasiliev.Idp.Dto;
 
 namespace Vasiliev.Idp.Calculator.Services;
@@ -12,18 +14,36 @@ public class MessageProcessor : IMessageProcessor
 
     private ILogger<MessageProcessor> Logger { get; }
 
-    public void Process(RateMessageDto? message)
+    public void Process(string? message)
     {
         if (message == null)
         {
-            Logger.LogWarning($"{nameof(MessageProcessor)} got an empty message");
+            Logger.LogError($"{nameof(MessageProcessor)} got an empty message");
             return;
         }
 
-        ProcessCommand(message.Command);
-        if (message.Data != null)
+        RateMessageDto? dto;
+        try
         {
-            ProcessData(message.Data);
+            dto = JsonConvert.DeserializeObject<RateMessageDto>(message);
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e,$"{nameof(MessageProcessor)} could not deserialize message {message}");
+            return;
+        }
+
+        if (dto == null)
+        {
+            Logger.LogError($"{nameof(MessageProcessor)} deserialized the message into NULL. Message: {message}");
+            return;
+
+        }
+       
+        ProcessCommand(dto.Command);
+        if (dto.Data != null)
+        {
+            ProcessData(dto.Data);
         }
     }
 

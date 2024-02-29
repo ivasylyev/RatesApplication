@@ -4,5 +4,5 @@ namespace Vasiliev.Idp.Calculator.Services;
 
 public interface IMessageProcessor
 {
-    void Process(RateMessageDto? message);
+    void Process(string? message);
 }

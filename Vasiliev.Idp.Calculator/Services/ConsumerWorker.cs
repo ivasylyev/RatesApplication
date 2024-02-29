@@ -49,11 +49,11 @@ public sealed class ConsumerWorker : BackgroundService
             {
                 var consumeResult = Consumer.Consume(ct);
 
-                if (consumeResult != null && !string.IsNullOrEmpty(consumeResult.Message?.Value))
+                if (consumeResult != null)
                 {
-                    Logger.LogTrace($"{consumeResult.Message.Key}: {consumeResult.Message.Value}");
-                    var message = JsonConvert.DeserializeObject<RateMessageDto>(consumeResult.Message.Value);
-                    Processor.Process(message);
+                    Logger.LogTrace($"{consumeResult.Message?.Key}: {consumeResult.Message?.Value}");
+
+                    Processor.Process(consumeResult.Message?.Value);
                 }
             }
             catch (OperationCanceledException)

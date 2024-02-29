@@ -32,7 +32,7 @@ public class KafkaProducerService : IKafkaProducerService
             {
                 if (ct.IsCancellationRequested)
                     break;
-                var value = JsonConvert.SerializeObject(rate);
+                var value = JsonConvert.SerializeObject(new RateMessageDto(rate));
                 var message = new Message<Null, string> { Value = value };
                 _producer.Produce(Options.RatesCalcTopicName, message, DeliveryHandler);
             }
@@ -52,7 +52,7 @@ public class KafkaProducerService : IKafkaProducerService
             if (ct.IsCancellationRequested)
                 return;
             
-            var value = JsonConvert.SerializeObject(command);
+            var value = JsonConvert.SerializeObject(new RateMessageDto(command));
             var message = new Message<Null, string> { Value = value };
             for (int partition = 0; partition < Options.RatesCalcPartitionCount; partition++)
             {

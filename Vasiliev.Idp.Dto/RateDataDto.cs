@@ -28,7 +28,9 @@ public class RateDataDto
     [JsonProperty("product_group_code")]
     public string ProductGroupCode { get; set; } = default!;
 
-    [JsonRequired] [JsonProperty("value")] public decimal Value { get; set; }
+    [JsonRequired] 
+    [JsonProperty("value")] 
+    public decimal Value { get; set; }
 
     [JsonRequired]
     [JsonProperty("is_deflated")]

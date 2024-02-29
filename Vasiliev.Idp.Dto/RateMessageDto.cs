@@ -8,7 +8,23 @@ public class RateMessageDto
     [JsonProperty("command")]
     public RateCommandDto Command { get; set; }
 
-    [JsonRequired]
-    [JsonProperty("data")]
+    [JsonRequired] 
+    [JsonProperty("data")] 
     public RateDataDto? Data { get; set; }
+
+    [JsonConstructor]
+    private RateMessageDto()
+    {
+    }
+
+    public RateMessageDto(RateCommandDto command)
+    {
+        Command = command;
+    }
+
+    public RateMessageDto(RateDataDto? data)
+    {
+        Command = RateCommandDto.None;
+        Data = data;
+    }
 }
