@@ -16,6 +16,7 @@ public class MessageProcessor : IMessageProcessor
 
     public void Process(string? message)
     {
+        
         if (message == null)
         {
             Logger.LogError($"{nameof(MessageProcessor)} got an empty message");
