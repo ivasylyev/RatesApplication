@@ -30,7 +30,7 @@ public class ProducerService : IProducerService
     {
         try
         {
-            Logger.LogDebug($"{_producer.Name} started producing {rates.Count} values to {Options.RatesCalcTopicName}");
+            Logger.LogDebug($"{_producer.Name} started producing {rates.Count} values to {Options.RatesCallbackTopicName}");
 
             int i = 0;
             var chunks = rates
@@ -39,7 +39,7 @@ public class ProducerService : IProducerService
 
             foreach (var chunk in chunks)
             {
-                Logger.LogTrace($"{_producer.Name} producing chunk of rates to {Options.RatesCalcTopicName}");
+                Logger.LogTrace($"{_producer.Name} producing chunk of rates to {Options.RatesCallbackTopicName}");
                 
                 foreach (var rate in chunk)
                 {
@@ -47,12 +47,12 @@ public class ProducerService : IProducerService
                         break;
                     var value = JsonConvert.SerializeObject(new RateMessageDto(rate));
                     var message = new Message<Null, string> { Value = value };
-                    _producer.Produce(Options.RatesCalcTopicName, message, DeliveryHandler);
+                    _producer.Produce(Options.RatesCallbackTopicName, message, DeliveryHandler);
                 }
 
                 _producer.Flush(TimeSpan.FromSeconds(Options.CoolDownIntervalSec));
             }
-            Logger.LogDebug($"{_producer.Name} completed producing {rates.Count} values to {Options.RatesCalcTopicName}");
+            Logger.LogDebug($"{_producer.Name} completed producing {rates.Count} values to {Options.RatesCallbackTopicName}");
         }
         catch (Exception e)
         {
