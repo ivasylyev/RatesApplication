@@ -5,6 +5,6 @@ namespace Vasiliev.Idp.Calculator.Repository;
 public interface IRateRepository
 {
     void Reset();
-    IEnumerable<RateDataDto> GetRates();
+    ICollection<RateDataDto> GetRates();
     void AddRate(RateDataDto rate);
 }

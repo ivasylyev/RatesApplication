@@ -12,10 +12,8 @@ public class RateRepository : IRateRepository
     {
         Rates.Clear();
     }
-    public IEnumerable<RateDataDto> GetRates()
-    {
-        return Rates.Values;
-    }
+    public ICollection<RateDataDto> GetRates() 
+        => Rates.Values;
 
     public void AddRate(RateDataDto rate)
     {

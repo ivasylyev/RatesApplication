@@ -6,7 +6,7 @@ namespace Vasiliev.Idp.Orchestrator.Services;
 
 public class CalculatorFacadeService
 {
-    private int _bufferSize = 100;
+    private const int BufferSize = 100;
     private IKafkaProducerService KafkaProducerService { get; }
 
     private IQueryService QueryService { get; }
@@ -23,14 +23,14 @@ public class CalculatorFacadeService
 
         var rateCount = await QueryService.GetRateCountAsync();
         var rates = QueryService.GetRatesAsync();
-        var rateDtoBuffer = new List<RateDataDto>(_bufferSize);
+        var rateDtoBuffer = new List<RateDataDto>(BufferSize);
         var progress = new KafkaProgress(rateCount);
 
         await foreach (var rate in rates)
         {
             var rateDto = rate.Adapt<RateDataDto>();
             rateDtoBuffer.Add(rateDto);
-            if (rateDtoBuffer.Count == _bufferSize)
+            if (rateDtoBuffer.Count == BufferSize)
             {
                 if (ct.IsCancellationRequested)
                 {

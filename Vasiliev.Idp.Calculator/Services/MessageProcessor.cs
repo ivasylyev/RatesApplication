@@ -8,6 +8,7 @@ namespace Vasiliev.Idp.Calculator.Services;
 
 public class MessageProcessor : IMessageProcessor
 {
+
     public MessageProcessor(IRateRepository repository, ILogger<MessageProcessor> logger)
     {
         Repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -60,6 +61,7 @@ public class MessageProcessor : IMessageProcessor
                 break;
             case RateCommandDto.EndCalculate:
                 var rates = Repository.GetRates();
+               
                 break;
         }
     }
