@@ -2,15 +2,14 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using Vasiliev.Idp.Calculator.Config;
-using Vasiliev.Idp.Dto;
+
 
 namespace Vasiliev.Idp.Calculator.Services;
 
 public sealed class ConsumerWorker : BackgroundService
 {
-    private  IConsumer<Null, string> Consumer { get; }
+    private IConsumer<Null, string> Consumer { get; }
     private ILogger<ConsumerWorker> Logger { get; }
     private KafkaOptions Options { get; }
 
@@ -30,17 +29,14 @@ public sealed class ConsumerWorker : BackgroundService
         };
 
         Consumer = new ConsumerBuilder<Null, string>(config).Build();
-
     }
 
     protected override async Task ExecuteAsync(CancellationToken ct)
-    {
-        await Task.Run(() => StartConsumerLoop(ct), ct);
-    }
+        => await Task.Run(() => StartConsumerLoop(ct), ct);
+    
 
     private void StartConsumerLoop(CancellationToken ct)
     {
-
         Consumer.Assign(new TopicPartition(Options.RatesCalcTopicName, Options.RatesForCalculationPartition));
 
         while (!ct.IsCancellationRequested)
@@ -53,7 +49,7 @@ public sealed class ConsumerWorker : BackgroundService
                 {
                     Logger.LogTrace($"{consumeResult.Message?.Key}: {consumeResult.Message?.Value}");
 
-                    Processor.Process(consumeResult.Message?.Value);
+                    Processor.Process(consumeResult.Message?.Value, ct);
                 }
             }
             catch (OperationCanceledException)

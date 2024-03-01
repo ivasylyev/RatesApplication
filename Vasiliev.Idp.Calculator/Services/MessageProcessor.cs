@@ -9,16 +9,18 @@ namespace Vasiliev.Idp.Calculator.Services;
 public class MessageProcessor : IMessageProcessor
 {
 
-    public MessageProcessor(IRateRepository repository, ILogger<MessageProcessor> logger)
+    public MessageProcessor(IRateRepository repository, IProducerService producer, ILogger<MessageProcessor> logger)
     {
         Repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        Producer = producer ?? throw new ArgumentNullException(nameof(producer));
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     private IRateRepository Repository { get; }
+    private IProducerService Producer { get; }
     private ILogger<MessageProcessor> Logger { get; }
 
-    public void Process(string? message)
+    public void Process(string? message, CancellationToken ct)
     {
         
         if (message == null)
@@ -45,14 +47,14 @@ public class MessageProcessor : IMessageProcessor
 
         }
        
-        ProcessCommand(dto.Command);
+        ProcessCommand(dto.Command, ct);
         if (dto.Data != null)
         {
             ProcessData(dto.Data);
         }
     }
 
-    private void ProcessCommand(RateCommandDto command)
+    private void ProcessCommand(RateCommandDto command, CancellationToken ct)
     {
         switch (command)
         {
@@ -61,7 +63,7 @@ public class MessageProcessor : IMessageProcessor
                 break;
             case RateCommandDto.EndCalculate:
                 var rates = Repository.GetRates();
-               
+                Producer.SendRates(rates, ct);
                 break;
         }
     }

@@ -11,6 +11,7 @@ builder.Services.Configure<KafkaOptions>(builder.Configuration.GetSection(KafkaO
 builder.Services.AddHostedService<ConsumerWorker>();
 builder.Services.AddSingleton<IMessageProcessor, MessageProcessor>();
 builder.Services.AddSingleton<IRateRepository, RateRepository>();
+builder.Services.AddSingleton<IProducerService, ProducerService>();
 
 
 var logger = new LoggerConfiguration()

@@ -4,5 +4,5 @@ namespace Vasiliev.Idp.Calculator.Services;
 
 public interface IMessageProcessor
 {
-    void Process(string? message);
+    void Process(string? message, CancellationToken ct);
 }

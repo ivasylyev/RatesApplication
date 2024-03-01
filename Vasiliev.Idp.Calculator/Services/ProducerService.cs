@@ -7,7 +7,7 @@ using Vasiliev.Idp.Dto;
 
 namespace Vasiliev.Idp.Calculator.Services;
 
-public class ProducerService 
+public class ProducerService : IProducerService
 {
     private const int BufferSize = 100;
     private readonly IProducer<Null, string> _producer;
