@@ -17,16 +17,16 @@ public class RateDataDto
     public DateOnly EndDate { get; set; }
 
     [JsonRequired]
-    [JsonProperty("node_from_code")]
-    public string NodeFromCode { get; set; } = default!;
+    [JsonProperty("node_from_id")]
+    public long NodeFromId { get; set; }
 
     [JsonRequired]
-    [JsonProperty("node_to_code")]
-    public string NodeToCode { get; set; } = default!;
+    [JsonProperty("node_to_id")]
+    public long NodeToId { get; set; } 
 
     [JsonRequired]
-    [JsonProperty("product_group_code")]
-    public string ProductGroupCode { get; set; } = default!;
+    [JsonProperty("product_group_id")]
+    public long ProductGroupId { get; set; } 
 
     [JsonRequired] 
     [JsonProperty("value")] 

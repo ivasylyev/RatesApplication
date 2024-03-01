@@ -32,8 +32,4 @@
     <ProjectReference Include="..\Vasiliev.Idp.Dto\Vasiliev.Idp.Dto.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repository\" />
-  </ItemGroup>
-
 </Project>

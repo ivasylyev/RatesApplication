@@ -1,17 +1,20 @@
 ﻿using Confluent.Kafka;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Vasiliev.Idp.Calculator.Repository;
 using Vasiliev.Idp.Dto;
 
 namespace Vasiliev.Idp.Calculator.Services;
 
 public class MessageProcessor : IMessageProcessor
 {
-    public MessageProcessor(ILogger<MessageProcessor> logger)
+    public MessageProcessor(IRateRepository repository, ILogger<MessageProcessor> logger)
     {
+        Repository = repository ?? throw new ArgumentNullException(nameof(repository));
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
+    private IRateRepository Repository { get; }
     private ILogger<MessageProcessor> Logger { get; }
 
     public void Process(string? message)
@@ -53,13 +56,15 @@ public class MessageProcessor : IMessageProcessor
         switch (command)
         {
             case RateCommandDto.StartCalculate:
+                Repository.Reset();
                 break;
             case RateCommandDto.EndCalculate:
+                var rates = Repository.GetRates();
                 break;
         }
     }
     private void ProcessData(RateDataDto data)
     {
-       
+       Repository.AddRate(data);
     }
 }
