@@ -1,6 +1,6 @@
 ﻿using Vasiliev.Idp.Dto;
 
-namespace Vasiliev.Idp.Command;
+namespace Vasiliev.Idp.Command.Services;
 
 public interface ICommandService
 {

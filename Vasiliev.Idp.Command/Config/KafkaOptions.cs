@@ -1,4 +1,4 @@
-﻿namespace Vasiliev.Idp.Calculator.Config;
+﻿namespace Vasiliev.Idp.Command.Config;
 
 public class KafkaOptions
 {
@@ -6,12 +6,10 @@ public class KafkaOptions
 
     public string BrokerList { get; set; } = default!;
 
-    public string RatesCalcTopicName { get; set; } = default!;
-
     public string RatesCallbackTopicName { get; set; } = default!;
 
     public string GroupId { get; set; } = default!;
 
-    public int RatesForCalculationPartition { get; set; }
+    
 
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Vasiliev.Idp.Dto;
 
-namespace Vasiliev.Idp.Command;
+namespace Vasiliev.Idp.Command.Services;
 
 public class CommandService : ICommandService
 {

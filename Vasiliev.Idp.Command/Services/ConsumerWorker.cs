@@ -2,11 +2,9 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Vasiliev.Idp.Calculator.Config;
-using Vasiliev.Idp.Dto;
+using Vasiliev.Idp.Command.Config;
 
-namespace Vasiliev.Idp.Calculator.Services;
+namespace Vasiliev.Idp.Command.Services;
 
 public sealed class ConsumerWorker : BackgroundService
 {
@@ -14,11 +12,9 @@ public sealed class ConsumerWorker : BackgroundService
     private ILogger<ConsumerWorker> Logger { get; }
     private KafkaOptions Options { get; }
 
-    private IMessageProcessor Processor { get; }
-
-    public ConsumerWorker(IMessageProcessor processor, IOptions<KafkaOptions> options, ILogger<ConsumerWorker> logger)
+ 
+    public ConsumerWorker(IOptions<KafkaOptions> options, ILogger<ConsumerWorker> logger)
     {
-        Processor = processor ?? throw new ArgumentNullException(nameof(processor));
         Options = options.Value ?? throw new ArgumentNullException(nameof(options), $"{nameof(options)} doesn't have Value");
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -41,7 +37,7 @@ public sealed class ConsumerWorker : BackgroundService
     private void StartConsumerLoop(CancellationToken ct)
     {
 
-        Consumer.Assign(new TopicPartition(Options.RatesCalcTopicName, Options.RatesForCalculationPartition));
+        Consumer.Subscribe(Options.RatesCallbackTopicName);
 
         while (!ct.IsCancellationRequested)
         {
@@ -53,7 +49,7 @@ public sealed class ConsumerWorker : BackgroundService
                 {
                     Logger.LogTrace($"{consumeResult.Message?.Key}: {consumeResult.Message?.Value}");
 
-                    Processor.Process(consumeResult.Message?.Value);
+                    //////
                 }
             }
             catch (OperationCanceledException)
