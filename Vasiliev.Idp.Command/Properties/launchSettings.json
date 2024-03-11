@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Vasiliev.Idp.Command": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
