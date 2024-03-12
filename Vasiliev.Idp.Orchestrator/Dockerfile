@@ -8,6 +8,7 @@ EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
+ENV DOTNET_URLS=http://+:8080
 WORKDIR /src
 COPY ["Vasiliev.Idp.Orchestrator/Vasiliev.Idp.Orchestrator.csproj", "Vasiliev.Idp.Orchestrator/"]
 RUN dotnet restore "./Vasiliev.Idp.Orchestrator/./Vasiliev.Idp.Orchestrator.csproj"

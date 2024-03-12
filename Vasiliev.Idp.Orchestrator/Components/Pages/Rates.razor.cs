@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Npgsql;
 using Vasiliev.Idp.Orchestrator.Models;
 using Vasiliev.Idp.Orchestrator.Services;
 
@@ -20,6 +21,37 @@ public partial class Rates
     {
         _rates = await QueryService.GetRatesAsync(PageSize).ToArrayAsync();
         _rateCount = await QueryService.GetRateCountAsync();
+
+
+        try
+        {
+            var connectionString = "Host=localhost;Username=postgres;Password=14142135;Database=rates";
+            await using var dataSource = NpgsqlDataSource.Create(connectionString);
+
+            // Insert some data
+            // await using (var cmd = dataSource.CreateCommand("INSERT INTO data (some_field) VALUES ($1)"))
+            //  {
+            //      cmd.Parameters.AddWithValue("Hello world");
+            //       await cmd.ExecuteNonQueryAsync();
+            //  }
+
+            // Retrieve all rows
+            await using (var cmd = dataSource.CreateCommand("SELECT '222' some_field"))
+            await using (var reader = await cmd.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    var format = reader.GetString(0);
+                    Console.WriteLine(format);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        
     }
 
     private async Task PageSelected(int page)
