@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Dapper;
+using Microsoft.AspNetCore.Components;
 using Npgsql;
 using Vasiliev.Idp.Orchestrator.Models;
 using Vasiliev.Idp.Orchestrator.Services;
@@ -36,6 +37,11 @@ public partial class Rates
             //  }
 
             // Retrieve all rows
+            await using (var con = dataSource.CreateConnection())
+            {
+                con.Open();
+                var groups = ( await con.QueryAsync<ProductGroup>(@"SELECT ""Id"", ""Code"", ""Name""	FROM public.""ProductGroup""")).AsList();
+            }
             await using (var cmd = dataSource.CreateCommand("SELECT '222' some_field"))
             await using (var reader = await cmd.ExecuteReaderAsync())
             {
