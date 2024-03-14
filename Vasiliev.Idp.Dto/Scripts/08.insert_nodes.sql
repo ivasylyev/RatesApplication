@@ -56,4 +56,10 @@ INSERT INTO Cities("Name")
 	('ярославль');
 
 
-select * from Cities
+insert into public."LocationNode"
+	("Code", "Name")
+select 
+	'A' || TO_CHAR(ROW_NUMBER() OVER(), 'fm00'),
+	"Name"
+from Cities
+

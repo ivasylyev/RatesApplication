@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS public."Rate"
     "NodeToId" bigint NOT NULL,
     "ProductGroupId" bigint NOT NULL,
     "Value" numeric NOT NULL,
-    "IsDeflated" bit(1) NOT NULL,
+    "IsDeflated" boolean NOT NULL,
     CONSTRAINT "Rate_pkey" PRIMARY KEY ("Id"),
       CONSTRAINT Rate_id_ukey UNIQUE ("Id")
 )
