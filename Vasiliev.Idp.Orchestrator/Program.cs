@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.Configure<KafkaOptions>(builder.Configuration.GetSection(KafkaOptions.Kafka));
+builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.Db));
 builder.Services.AddSingleton<IQueryService, QueryService>();
 builder.Services.AddSingleton<IKafkaProducerService, KafkaProducerService>();
 builder.Services.AddSingleton<CalculatorFacadeService>();

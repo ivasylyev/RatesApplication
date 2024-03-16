@@ -18,13 +18,15 @@ public partial class Rates
     private int _rateCount;
     private int _currentPageNumber = 1;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _rates = await QueryService.GetRatesAsync(PageSize).ToArrayAsync();
-        _rateCount = await QueryService.GetRateCountAsync();
-   
+        if (firstRender)
+        {
+             _rates = await QueryService.GetRatesAsync(PageSize).ToArrayAsync();
+             _rateCount = await QueryService.GetRateCountAsync();
+            StateHasChanged();
+        }
     }
-
     private async Task PageSelected(int page)
     {
         _currentPageNumber = page;
