@@ -31,22 +31,7 @@ namespace Vasiliev.Idp.Orchestrator.Services
                 await using var con = dataSource.CreateConnection();
                 con.Open();
                 result = await con.QueryAsync<Rate, ProductGroup, LocationNode, LocationNode, Rate>(
-                    @$"SELECT ""RateId"" AS ""Id"", 
-                                ""StartDate"", 
-                                ""EndDate"", 
-                                ""Value"", 
-                                ""IsDeflated"", 
-                                ""ProductGroupId"" AS ""Id"", 
-                                ""ProductGroupCode"" AS ""Code"", 
-                                ""ProductGroupName"" AS ""Name"", 
-                                ""NodeFromId"" AS ""Id"", 
-                                ""NodeFromCode""  AS ""Code"", 
-                                ""NodeFromName"" AS ""Name"", 
-                                ""NodeToId"" AS ""Id"", 
-                                ""NodeToCode"" AS ""Code"", 
-                                ""NodeToName"" AS ""Name""
-	                                FROM public.""FullRates""
-                        LIMIT {take} OFFSET {skip}",
+                    GetRatesSql(take, skip),
                     (rate, productGroup, nodeFrom, nodeTo) =>
                     {
                         rate.ProductGroup = productGroup;
@@ -78,7 +63,7 @@ namespace Vasiliev.Idp.Orchestrator.Services
                 await using var dataSource = NpgsqlDataSource.Create(Options.ConnectionString);
                 await using var con = dataSource.CreateConnection();
                 con.Open();
-                var result = await con.ExecuteScalarAsync<int>(@"SELECT public.""GetRatesCount""()");
+                var result = await con.ExecuteScalarAsync<int>(GetRatesCountSql());
                 return result;
             }
             catch (Exception e)
@@ -87,5 +72,27 @@ namespace Vasiliev.Idp.Orchestrator.Services
                 throw;
             }
         }
+
+        private static string GetRatesSql(int take, int skip)
+            => @$"SELECT ""RateId"" AS ""Id"", 
+                                ""StartDate"", 
+                                ""EndDate"", 
+                                ""Value"", 
+                                ""IsDeflated"", 
+                                ""ProductGroupId"" AS ""Id"", 
+                                ""ProductGroupCode"" AS ""Code"", 
+                                ""ProductGroupName"" AS ""Name"", 
+                                ""NodeFromId"" AS ""Id"", 
+                                ""NodeFromCode""  AS ""Code"", 
+                                ""NodeFromName"" AS ""Name"", 
+                                ""NodeToId"" AS ""Id"", 
+                                ""NodeToCode"" AS ""Code"", 
+                                ""NodeToName"" AS ""Name""
+	                                FROM public.""FullRates""
+                        LIMIT {take} OFFSET {skip}";
+
+
+        private static string GetRatesCountSql()
+            => @"SELECT public.""GetRatesCount""()";
     }
 }
