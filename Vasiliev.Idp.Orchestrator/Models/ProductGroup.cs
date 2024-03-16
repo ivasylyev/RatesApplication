@@ -2,6 +2,7 @@
 
 public class ProductGroup
 {
+
     public ProductGroup(long id, string code, string name)
     {
         Id = id;

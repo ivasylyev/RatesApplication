@@ -2,6 +2,7 @@
 
 public class LocationNode
 {
+
     public LocationNode(long id, string code, string name)
     {
         Id = id;

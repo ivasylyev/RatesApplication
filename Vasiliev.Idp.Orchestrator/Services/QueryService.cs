@@ -1,5 +1,4 @@
-﻿
-using Dapper;
+﻿using Dapper;
 using Microsoft.Extensions.Options;
 using Npgsql;
 using Vasiliev.Idp.Orchestrator.Config;
@@ -22,35 +21,45 @@ namespace Vasiliev.Idp.Orchestrator.Services
 
         public async IAsyncEnumerable<Rate> GetRatesAsync(int take = int.MaxValue, int skip = 0)
         {
-            if (string.IsNullOrEmpty(Options.ConnectionString))
-                throw new InvalidOperationException($"Config value {nameof(Options.ConnectionString)} is absent");
-
-            await using var dataSource = NpgsqlDataSource.Create(Options.ConnectionString);
-            await using var con = dataSource.CreateConnection();
-            con.Open();
-            var result = await con.QueryAsync<Rate, ProductGroup, LocationNode, LocationNode, Rate>(@$"
-                    SELECT 
-	                r.""Id"",
-                    r.""StartDate"",
-                    r.""EndDate"",
-                    r.""Value"",
-                    r.""IsDeflated"",
-                    pg.*, nf.*, nt.*
-                FROM public.""Rate"" as r
-                JOIN public.""ProductGroup"" pg
-	                ON pg.""Id"" = r.""ProductGroupId""
-                JOIN public.""LocationNode"" nf
-	                ON nf.""Id"" = r.""NodeFromId""
-                JOIN public.""LocationNode"" nt
-	                ON nt.""Id"" = r.""NodeToId""
-                    LIMIT {take} OFFSET {skip}
-                    ", (rate, productGroup, nodeFrom, nodeTo) =>
+            IEnumerable<Rate> result;
+            try
             {
-                rate.ProductGroup = productGroup;
-                rate.NodeFrom = nodeFrom;
-                rate.NodeTo = nodeTo;
-                return rate;
-            });
+                if (string.IsNullOrEmpty(Options.ConnectionString))
+                    throw new InvalidOperationException($"Config value {nameof(Options.ConnectionString)} is absent");
+
+                await using var dataSource = NpgsqlDataSource.Create(Options.ConnectionString);
+                await using var con = dataSource.CreateConnection();
+                con.Open();
+                result = await con.QueryAsync<Rate, ProductGroup, LocationNode, LocationNode, Rate>(
+                    @$"SELECT ""RateId"" AS ""Id"", 
+                                ""StartDate"", 
+                                ""EndDate"", 
+                                ""Value"", 
+                                ""IsDeflated"", 
+                                ""ProductGroupId"" AS ""Id"", 
+                                ""ProductGroupCode"" AS ""Code"", 
+                                ""ProductGroupName"" AS ""Name"", 
+                                ""NodeFromId"" AS ""Id"", 
+                                ""NodeFromCode""  AS ""Code"", 
+                                ""NodeFromName"" AS ""Name"", 
+                                ""NodeToId"" AS ""Id"", 
+                                ""NodeToCode"" AS ""Code"", 
+                                ""NodeToName"" AS ""Name""
+	                                FROM public.""FullRates""
+                        LIMIT {take} OFFSET {skip}",
+                    (rate, productGroup, nodeFrom, nodeTo) =>
+                    {
+                        rate.ProductGroup = productGroup;
+                        rate.NodeFrom = nodeFrom;
+                        rate.NodeTo = nodeTo;
+                        return rate;
+                    });
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, "Cannot get rates");
+                throw;
+            }
 
             foreach (var rate in result)
             {
@@ -58,17 +67,25 @@ namespace Vasiliev.Idp.Orchestrator.Services
             }
         }
 
-       
+
         public async Task<int> GetRateCountAsync()
         {
-            if (string.IsNullOrEmpty(Options.ConnectionString))
-                throw new InvalidOperationException($"Config value {nameof(Options.ConnectionString)} is absent");
+            try
+            {
+                if (string.IsNullOrEmpty(Options.ConnectionString))
+                    throw new InvalidOperationException($"Config value {nameof(Options.ConnectionString)} is absent");
 
-            await using var dataSource = NpgsqlDataSource.Create(Options.ConnectionString);
-            await using var con = dataSource.CreateConnection();
-            con.Open();
-            var result = await con.ExecuteScalarAsync<int>(@"SELECT public.""GetRatesCount""()");
-            return result;
+                await using var dataSource = NpgsqlDataSource.Create(Options.ConnectionString);
+                await using var con = dataSource.CreateConnection();
+                con.Open();
+                var result = await con.ExecuteScalarAsync<int>(@"SELECT public.""GetRatesCount""()");
+                return result;
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e, "Cannot get rates count");
+                throw;
+            }
         }
     }
 }
