@@ -5,8 +5,8 @@ namespace Vasiliev.Idp.Dto;
 public class RateDataDto
 {
     [JsonRequired]
-    [JsonProperty("rate_id")]
-    public long RateId { get; set; }
+    [JsonProperty("id")]
+    public long Id { get; set; }
 
     [JsonRequired]
     [JsonProperty("start_date")]

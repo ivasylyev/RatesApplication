@@ -2,7 +2,7 @@
 
 public class Rate
 {
-    public long RateId { get; set; }
+    public long Id { get; set; }
 
     public DateOnly StartDate { get; set; }
 
@@ -19,7 +19,7 @@ public class Rate
 
     public override string ToString()
     {
-        return $"{RateId} {StartDate} {EndDate} {NodeFrom?.Code} {NodeTo?.Code} {ProductGroup?.Code} {Value}";
+        return $"{Id} {StartDate} {EndDate} {NodeFrom?.Code} {NodeTo?.Code} {ProductGroup?.Code} {Value}";
     }
 
 }

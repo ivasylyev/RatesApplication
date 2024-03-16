@@ -32,7 +32,7 @@ else
             @foreach (var rate in _rates)
             {
                 <tr>
-                    <td>@rate.RateId</td>
+                    <td>@rate.Id</td>
                     <td>@rate.StartDate.ToShortDateString()</td>
                     <td>@rate.EndDate.ToShortDateString()</td>
                     <td>@rate.NodeFrom?.Code</td>
