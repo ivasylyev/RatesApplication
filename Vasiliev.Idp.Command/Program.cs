@@ -2,12 +2,15 @@
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Vasiliev.Idp.Command.Config;
+using Vasiliev.Idp.Command.Repository;
 using Vasiliev.Idp.Command.Services;
 
 HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
 builder.Services.Configure<KafkaOptions>(builder.Configuration.GetSection(KafkaOptions.Kafka));
 builder.Services.AddHostedService<ConsumerWorker>();
+builder.Services.AddSingleton<IMessageProcessor, MessageProcessor>();
+builder.Services.AddSingleton<IRateRepository, RateRepository>();
 
 
 var logger = new LoggerConfiguration()

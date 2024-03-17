@@ -26,7 +26,7 @@ public class CalculatorFacadeService
         var rateDtoBuffer = new List<RateDataDto>(BufferSize);
         var progress = new KafkaProgress(rateCount);
 
-        await foreach (var rate in rates)
+        await foreach (var rate in rates.Where(r => !r.IsDeflated).WithCancellation(ct))
         {
             var rateDto = rate.Adapt<RateDataDto>();
             rateDtoBuffer.Add(rateDto);
