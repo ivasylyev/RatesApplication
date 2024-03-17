@@ -64,6 +64,7 @@ public class MessageProcessor : IMessageProcessor
             case RateCommandDto.EndCalculate:
                 var rates = Repository.GetRates();
                 Producer.SendRates(rates, ct);
+                Repository.Reset();
                 break;
         }
     }

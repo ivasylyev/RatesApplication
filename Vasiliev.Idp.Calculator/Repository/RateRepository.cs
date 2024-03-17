@@ -19,7 +19,7 @@ public class RateRepository : IRateRepository
     {
         foreach (var r in DeflateRate(rate))
         {
-            var key = $"{r.NodeFromId}_{r.NodeFromId}_{r.ProductGroupId}_{r.StartDate}_{r.EndDate}";
+            var key = $"{r.NodeToId}_{r.NodeFromId}_{r.ProductGroupId}_{r.StartDate}_{r.EndDate}";
 
             if (r.IsDeflated && Rates.TryGetValue(key, out var existingRate) && !existingRate.IsDeflated)
                 return;

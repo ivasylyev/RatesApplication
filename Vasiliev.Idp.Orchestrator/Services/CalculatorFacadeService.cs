@@ -32,6 +32,7 @@ public class CalculatorFacadeService
             rateDtoBuffer.Add(rateDto);
             if (rateDtoBuffer.Count == BufferSize)
             {
+                //break;
                 if (ct.IsCancellationRequested)
                 {
                     progress.Reset();

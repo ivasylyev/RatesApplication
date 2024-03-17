@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Vasiliev.Idp.Calculator.Config;
+using static Confluent.Kafka.ConfigPropertyNames;
 
 
 namespace Vasiliev.Idp.Calculator.Services;
@@ -37,8 +38,8 @@ public sealed class ConsumerWorker : BackgroundService
 
     private void StartConsumerLoop(CancellationToken ct)
     {
-        Consumer.Assign(new TopicPartition(Options.RatesCalcTopicName, Options.RatesForCalculationPartition));
-
+       // Consumer.Assign(new TopicPartition(Options.RatesCalcTopicName, Options.RatesForCalculationPartition));
+        Consumer.Subscribe(Options.RatesCalcTopicName);
         while (!ct.IsCancellationRequested)
         {
             try
