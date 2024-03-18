@@ -4,8 +4,8 @@ namespace Vasiliev.Idp.Dto;
 
 public class RateDataDto
 {
-    [JsonRequired]
-    [JsonProperty("id")]
+    [JsonRequired] 
+    [JsonProperty("id")] 
     public long Id { get; set; }
 
     [JsonRequired]
@@ -22,11 +22,11 @@ public class RateDataDto
 
     [JsonRequired]
     [JsonProperty("node_to_id")]
-    public long NodeToId { get; set; } 
+    public long NodeToId { get; set; }
 
     [JsonRequired]
     [JsonProperty("product_group_id")]
-    public long ProductGroupId { get; set; } 
+    public long ProductGroupId { get; set; }
 
     [JsonRequired] 
     [JsonProperty("value")] 
@@ -35,4 +35,7 @@ public class RateDataDto
     [JsonRequired]
     [JsonProperty("is_deflated")]
     public bool IsDeflated { get; set; }
+
+    public override string ToString()
+        => $"{Id}, {StartDate}-{EndDate}, Node: {NodeFromId}-{NodeToId}, PG: {ProductGroupId}, Val: {Value}, Deflated: {IsDeflated}";
 }

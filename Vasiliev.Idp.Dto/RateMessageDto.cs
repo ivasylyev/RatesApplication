@@ -26,4 +26,7 @@ public class RateMessageDto
         Command = RateCommandDto.None;
         Data = data;
     }
+
+    public override string ToString()
+        => $"{Command}, Data: {Data?.ToString()?? "NULL"}";
 }

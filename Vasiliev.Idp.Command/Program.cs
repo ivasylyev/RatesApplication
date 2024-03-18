@@ -8,6 +8,7 @@ using Vasiliev.Idp.Command.Services;
 HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
 builder.Services.Configure<KafkaOptions>(builder.Configuration.GetSection(KafkaOptions.Kafka));
+builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.Db));
 builder.Services.AddHostedService<ConsumerWorker>();
 builder.Services.AddSingleton<IMessageProcessor, MessageProcessor>();
 builder.Services.AddSingleton<IRateRepository, RateRepository>();

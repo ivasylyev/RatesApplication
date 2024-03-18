@@ -11,10 +11,13 @@ public sealed class ConsumerWorker : BackgroundService
     private  IConsumer<Null, string> Consumer { get; }
     private ILogger<ConsumerWorker> Logger { get; }
     private KafkaOptions Options { get; }
+    IMessageProcessor Processor { get; }
 
- 
-    public ConsumerWorker(IOptions<KafkaOptions> options, ILogger<ConsumerWorker> logger)
+
+
+    public ConsumerWorker(IMessageProcessor processor, IOptions<KafkaOptions> options, ILogger<ConsumerWorker> logger)
     {
+        Processor = processor ?? throw new ArgumentNullException(nameof(processor));
         Options = options.Value ?? throw new ArgumentNullException(nameof(options), $"{nameof(options)} doesn't have Value");
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -49,7 +52,7 @@ public sealed class ConsumerWorker : BackgroundService
                 {
                     Logger.LogTrace($"{consumeResult.Message?.Key}: {consumeResult.Message?.Value}");
 
-                    //////
+                    Processor.Process(consumeResult.Message?.Value, ct);
                 }
             }
             catch (OperationCanceledException)
