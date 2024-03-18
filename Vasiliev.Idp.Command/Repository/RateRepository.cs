@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Npgsql;
+using NpgsqlTypes;
+using System.Diagnostics.Metrics;
 using Vasiliev.Idp.Command.Config;
 using Vasiliev.Idp.Dto;
 
@@ -28,11 +30,19 @@ public class RateRepository : IRateRepository
             using var dataSource = NpgsqlDataSource.Create(Options.ConnectionString);
             using var con = dataSource.CreateConnection();
             con.Open();
-            var result = con.Execute("SELECT 1");
+            using var command = new NpgsqlCommand(@"CALL public.""SaveRate1""()", con);
+            //command.Parameters.AddWithValue("nodeFromId", NpgsqlDbType.Bigint, rate.NodeFromId);
+            //command.Parameters.AddWithValue("nodeToId", NpgsqlDbType.Bigint, rate.NodeToId);
+            //command.Parameters.AddWithValue("productGroupId", NpgsqlDbType.Bigint, rate.ProductGroupId);
+            //command.Parameters.AddWithValue("startDate", NpgsqlDbType.Date, rate.StartDate);
+            //command.Parameters.AddWithValue("endDate", NpgsqlDbType.Date, rate.EndDate);
+            //command.Parameters.AddWithValue("val", NpgsqlDbType.Numeric, rate.Value);
+            //command.Parameters.AddWithValue("isDeflated", NpgsqlDbType.Boolean, rate.IsDeflated);
+            command.ExecuteNonQuery();
         }
         catch (Exception e)
         {
-            Logger.LogError(e, "Cannot save rate");
+            Logger.LogError(e, $"Cannot save rate {rate}");
             throw;
         }
     }
