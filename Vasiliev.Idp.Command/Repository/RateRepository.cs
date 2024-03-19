@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Npgsql;
 using NpgsqlTypes;
+using System.Data;
 using System.Diagnostics.Metrics;
 using Vasiliev.Idp.Command.Config;
 using Vasiliev.Idp.Dto;
@@ -30,14 +31,18 @@ public class RateRepository : IRateRepository
             using var dataSource = NpgsqlDataSource.Create(Options.ConnectionString);
             using var con = dataSource.CreateConnection();
             con.Open();
-            using var command = new NpgsqlCommand(@"CALL public.""SaveRate1""()", con);
-            //command.Parameters.AddWithValue("nodeFromId", NpgsqlDbType.Bigint, rate.NodeFromId);
-            //command.Parameters.AddWithValue("nodeToId", NpgsqlDbType.Bigint, rate.NodeToId);
-            //command.Parameters.AddWithValue("productGroupId", NpgsqlDbType.Bigint, rate.ProductGroupId);
-            //command.Parameters.AddWithValue("startDate", NpgsqlDbType.Date, rate.StartDate);
-            //command.Parameters.AddWithValue("endDate", NpgsqlDbType.Date, rate.EndDate);
-            //command.Parameters.AddWithValue("val", NpgsqlDbType.Numeric, rate.Value);
-            //command.Parameters.AddWithValue("isDeflated", NpgsqlDbType.Boolean, rate.IsDeflated);
+            
+            using var command = new NpgsqlCommand(@"public.""SaveRate""", con);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("node_from_id", NpgsqlDbType.Bigint, 123456789);
+            command.Parameters.AddWithValue("node_to_id", NpgsqlDbType.Bigint, 123456789);
+            command.Parameters.AddWithValue("product_group_id", NpgsqlDbType.Bigint, 123456789);
+            command.Parameters.AddWithValue("start_date", NpgsqlDbType.Date, rate.StartDate);
+            command.Parameters.AddWithValue("end_date", NpgsqlDbType.Date, rate.EndDate);
+            command.Parameters.AddWithValue("val", NpgsqlDbType.Numeric, rate.Value);
+            command.Parameters.AddWithValue("is_deflated", NpgsqlDbType.Boolean, rate.IsDeflated);
+
             command.ExecuteNonQuery();
         }
         catch (Exception e)
