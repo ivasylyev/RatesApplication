@@ -1,31 +1,34 @@
--- PROCEDURE: public.SaveRate(bigint, bigint, bigint, date, date, numeric, boolean)
+-- PROCEDURE: public.SaveRates(json)
 
--- DROP PROCEDURE IF EXISTS public."SaveRate"(bigint, bigint, bigint, date, date, numeric, boolean);
+-- DROP PROCEDURE IF EXISTS public."SaveRates"(json);
 
 
-CREATE OR REPLACE PROCEDURE public."SaveRate"(
-	IN node_from_id bigint,
-	IN node_to_id bigint,
-	IN product_group_id bigint,
-	IN start_date date,
-	IN end_date date,
-	IN val numeric,
-	IN is_deflated boolean)
-AS $$
-
+CREATE OR REPLACE PROCEDURE public."SaveRates"(rates json) AS $$
 BEGIN
-
-	MERGE INTO public."Rate" AS r
-	USING (
-		SELECT 
-		node_from_id 	AS "NodeFromId",
-		node_to_id		AS "NodeToId",
-		product_group_id AS "ProductGroupId",
-		start_date 		AS "StartDate",
-		end_date		AS "EndDate",
-		val				AS "Value",
-		is_deflated		AS "IsDeflated"
-	) AS d
+	DROP TABLE IF EXISTS temp_rates;
+	
+    CREATE TEMP TABLE temp_rates (
+		"StartDate" date NOT NULL,
+		"EndDate" date NOT NULL,
+		"NodeFromId" bigint NOT NULL,
+		"NodeToId" bigint NOT NULL,
+		"ProductGroupId" bigint NOT NULL,
+		"Value" numeric NOT NULL,
+		"IsDeflated" boolean NOT NULL		
+    );
+INSERT INTO temp_rates ("StartDate", "EndDate", "NodeFromId", "NodeToId", "ProductGroupId", "Value", "IsDeflated")
+    SELECT
+		(json_data->>'start_date')::date,
+		(json_data->>'end_date')::date,
+       	(json_data->>'node_from_id')::bigint,
+		(json_data->>'node_to_id')::bigint,
+		(json_data->>'product_group_id')::bigint,			
+       	(json_data->>'value')::numeric,
+		(json_data->>'is_deflated')::boolean
+    FROM json_array_elements(rates) AS json_data;
+	
+MERGE INTO public."Rate" AS r
+	USING temp_rates AS d
 	ON r."NodeFromId" = d."NodeFromId"
 		AND r."NodeToId" = d."NodeToId"
 		AND r."ProductGroupId" = d."ProductGroupId"
@@ -41,8 +44,9 @@ BEGIN
 	  	INSERT ("StartDate", "EndDate", "NodeFromId", "NodeToId", "ProductGroupId", "Value", "IsDeflated")
 	  	VALUES (d."StartDate", d."EndDate", d."NodeFromId", d."NodeToId", d."ProductGroupId", d."Value", d."IsDeflated")
 	;
+
 END;
 $$ LANGUAGE plpgsql;
 
-ALTER PROCEDURE public."SaveRate"(bigint, bigint, bigint, date, date, numeric, boolean)
+ALTER PROCEDURE public."SaveRates"(json)
     OWNER TO postgres;

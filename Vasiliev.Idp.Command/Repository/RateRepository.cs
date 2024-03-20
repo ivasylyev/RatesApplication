@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Npgsql;
 using NpgsqlTypes;
 using System.Data;
@@ -32,6 +33,31 @@ public class RateRepository : IRateRepository
             using var con = dataSource.CreateConnection();
             con.Open();
             
+            using var command = new NpgsqlCommand(@"public.""SaveRates""", con);
+            command.CommandType = CommandType.StoredProcedure;
+
+            var json = JsonConvert.SerializeObject(new RateDataDto[] { rate });
+            command.Parameters.AddWithValue("rates", NpgsqlDbType.Json, json);        
+
+            command.ExecuteNonQuery();
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, $"Cannot save rate {rate}");
+            throw;
+        }
+    }
+    public void InsertOrUpdateRate1(RateDataDto rate)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(Options.ConnectionString))
+                throw new InvalidOperationException($"Config value {nameof(Options.ConnectionString)} is absent");
+
+            using var dataSource = NpgsqlDataSource.Create(Options.ConnectionString);
+            using var con = dataSource.CreateConnection();
+            con.Open();
+
             using var command = new NpgsqlCommand(@"public.""SaveRate""", con);
             command.CommandType = CommandType.StoredProcedure;
 
