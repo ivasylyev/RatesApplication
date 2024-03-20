@@ -42,7 +42,7 @@ public class MessageProcessor : IMessageProcessor
             return;
         }
 
-        if (dto.Data != null)
+        if (dto.Data != null && dto.Data.IsDeflated)
         {
             Repository.InsertOrUpdateRate(dto.Data);
         }

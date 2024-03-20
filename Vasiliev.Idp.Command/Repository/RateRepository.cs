@@ -35,9 +35,9 @@ public class RateRepository : IRateRepository
             using var command = new NpgsqlCommand(@"public.""SaveRate""", con);
             command.CommandType = CommandType.StoredProcedure;
 
-            command.Parameters.AddWithValue("node_from_id", NpgsqlDbType.Bigint, 123456789);
-            command.Parameters.AddWithValue("node_to_id", NpgsqlDbType.Bigint, 123456789);
-            command.Parameters.AddWithValue("product_group_id", NpgsqlDbType.Bigint, 123456789);
+            command.Parameters.AddWithValue("node_from_id", NpgsqlDbType.Bigint, rate.NodeFromId);
+            command.Parameters.AddWithValue("node_to_id", NpgsqlDbType.Bigint, rate.NodeToId);
+            command.Parameters.AddWithValue("product_group_id", NpgsqlDbType.Bigint, rate.ProductGroupId);
             command.Parameters.AddWithValue("start_date", NpgsqlDbType.Date, rate.StartDate);
             command.Parameters.AddWithValue("end_date", NpgsqlDbType.Date, rate.EndDate);
             command.Parameters.AddWithValue("val", NpgsqlDbType.Numeric, rate.Value);

@@ -41,13 +41,13 @@ public sealed class ConsumerWorker : BackgroundService
     {
 
         Consumer.Subscribe(Options.RatesCallbackTopicName);
-
+        int i = 0;
         while (!ct.IsCancellationRequested)
         {
             try
             {
                 var consumeResult = Consumer.Consume(ct);
-
+                i++;
                 if (consumeResult != null)
                 {
                     Logger.LogTrace($"{consumeResult.Message?.Key}: {consumeResult.Message?.Value}");
