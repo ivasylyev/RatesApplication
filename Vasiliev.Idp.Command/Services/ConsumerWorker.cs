@@ -3,22 +3,17 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Vasiliev.Idp.Command.Config;
+using Vasiliev.Idp.Dto;
 
 namespace Vasiliev.Idp.Command.Services;
 
 public sealed class ConsumerWorker : BackgroundService
 {
-    private  IConsumer<Null, string> Consumer { get; }
-    private ILogger<ConsumerWorker> Logger { get; }
-    private KafkaOptions Options { get; }
-    IMessageProcessor Processor { get; }
-
-
-
     public ConsumerWorker(IMessageProcessor processor, IOptions<KafkaOptions> options, ILogger<ConsumerWorker> logger)
     {
         Processor = processor ?? throw new ArgumentNullException(nameof(processor));
-        Options = options.Value ?? throw new ArgumentNullException(nameof(options), $"{nameof(options)} doesn't have Value");
+        Options = options.Value ??
+                  throw new ArgumentNullException(nameof(options), $"{nameof(options)} doesn't have Value");
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         var config = new ConsumerConfig
@@ -29,21 +24,25 @@ public sealed class ConsumerWorker : BackgroundService
         };
 
         Consumer = new ConsumerBuilder<Null, string>(config).Build();
-
     }
+
+    private IConsumer<Null, string> Consumer { get; }
+    private ILogger<ConsumerWorker> Logger { get; }
+    private KafkaOptions Options { get; }
+    private IMessageProcessor Processor { get; }
 
     protected override async Task ExecuteAsync(CancellationToken ct)
     {
-        await Task.Run(() => StartConsumerLoop(ct), ct);
+        var consumerTask = Task.Run(() => StartConsumerLoop(ct), ct);
+        var processorTask = Task.Run(async () => await StartProcessorLoop(ct), ct);
+        await Task.WhenAll(consumerTask, processorTask);
     }
 
     private void StartConsumerLoop(CancellationToken ct)
     {
-
         Consumer.Subscribe(Options.RatesCallbackTopicName);
-        int i = 0;
+        var i = 0;
         while (!ct.IsCancellationRequested)
-        {
             try
             {
                 var consumeResult = Consumer.Consume(ct);
@@ -52,7 +51,7 @@ public sealed class ConsumerWorker : BackgroundService
                 {
                     Logger.LogTrace($"{consumeResult.Message?.Key}: {consumeResult.Message?.Value}");
 
-                    Processor.Process(consumeResult.Message?.Value, ct);
+                    Processor.Enqueue(consumeResult.Message?.Value, ct);
                 }
             }
             catch (OperationCanceledException)
@@ -74,7 +73,23 @@ public sealed class ConsumerWorker : BackgroundService
                 Logger.LogCritical(e, "Unexpected error.");
                 break;
             }
+    }
+
+    private async Task StartProcessorLoop(CancellationToken ct)
+    {
+        while (!ct.IsCancellationRequested)
+        {
+            try
+            {
+                await Processor.ProcessMessageQueue(ct);
+            }
+
+            catch (Exception e)
+            {
+                Logger.LogError(e, "cannot process rates.");
+            }
         }
+
     }
 
     public override void Dispose()

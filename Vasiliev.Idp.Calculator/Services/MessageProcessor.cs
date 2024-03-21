@@ -1,4 +1,4 @@
-﻿using Confluent.Kafka;
+﻿
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Vasiliev.Idp.Calculator.Repository;

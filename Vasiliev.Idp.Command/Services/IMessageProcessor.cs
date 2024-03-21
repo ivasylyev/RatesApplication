@@ -2,5 +2,6 @@
 
 public interface IMessageProcessor
 {
-    void Process(string? message, CancellationToken ct);
+    void Enqueue(string? message, CancellationToken ct);
+    Task ProcessMessageQueue(CancellationToken ct);
 }

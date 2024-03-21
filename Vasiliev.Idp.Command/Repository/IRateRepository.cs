@@ -4,5 +4,6 @@ namespace Vasiliev.Idp.Command.Repository;
 
 public interface IRateRepository
 {
-    void InsertOrUpdateRate(RateDataDto rate);
+    Task InsertOrUpdateRate(RateDataDto rate, CancellationToken ct);
+    Task InsertOrUpdateRatesAsync(ICollection<RateDataDto> rates, CancellationToken ct);
 }

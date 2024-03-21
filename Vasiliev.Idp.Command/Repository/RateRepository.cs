@@ -1,11 +1,9 @@
-﻿using Dapper;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Npgsql;
 using NpgsqlTypes;
 using System.Data;
-using System.Diagnostics.Metrics;
 using Vasiliev.Idp.Command.Config;
 using Vasiliev.Idp.Dto;
 
@@ -22,43 +20,43 @@ public class RateRepository : IRateRepository
 
         Logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
-    public void InsertOrUpdateRate(RateDataDto rate)
+    public async Task InsertOrUpdateRatesAsync(ICollection<RateDataDto> rates, CancellationToken ct)
     {
         try
         {
             if (string.IsNullOrEmpty(Options.ConnectionString))
                 throw new InvalidOperationException($"Config value {nameof(Options.ConnectionString)} is absent");
 
-            using var dataSource = NpgsqlDataSource.Create(Options.ConnectionString);
-            using var con = dataSource.CreateConnection();
-            con.Open();
-            
-            using var command = new NpgsqlCommand(@"public.""SaveRates""", con);
+            await using var dataSource = NpgsqlDataSource.Create(Options.ConnectionString);
+            await using var con = dataSource.CreateConnection();
+            await con.OpenAsync(ct);
+
+            await using var command = new NpgsqlCommand(@"public.""SaveRates""", con);
             command.CommandType = CommandType.StoredProcedure;
 
-            var json = JsonConvert.SerializeObject(new RateDataDto[] { rate });
-            command.Parameters.AddWithValue("rates", NpgsqlDbType.Json, json);        
+            var json = JsonConvert.SerializeObject(rates);
+            command.Parameters.AddWithValue("rates", NpgsqlDbType.Json, json);
 
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync(ct);
         }
         catch (Exception e)
         {
-            Logger.LogError(e, $"Cannot save rate {rate}");
+            Logger.LogError(e, $"Cannot save rates");
             throw;
         }
     }
-    public void InsertOrUpdateRate1(RateDataDto rate)
+    public async Task InsertOrUpdateRate(RateDataDto rate, CancellationToken ct)
     {
         try
         {
             if (string.IsNullOrEmpty(Options.ConnectionString))
                 throw new InvalidOperationException($"Config value {nameof(Options.ConnectionString)} is absent");
 
-            using var dataSource = NpgsqlDataSource.Create(Options.ConnectionString);
-            using var con = dataSource.CreateConnection();
-            con.Open();
+            await using var dataSource = NpgsqlDataSource.Create(Options.ConnectionString);
+            await using var con = dataSource.CreateConnection();
+            await con.OpenAsync(ct);
 
-            using var command = new NpgsqlCommand(@"public.""SaveRate""", con);
+            await using var command = new NpgsqlCommand(@"public.""SaveRate""", con);
             command.CommandType = CommandType.StoredProcedure;
 
             command.Parameters.AddWithValue("node_from_id", NpgsqlDbType.Bigint, rate.NodeFromId);
@@ -69,7 +67,7 @@ public class RateRepository : IRateRepository
             command.Parameters.AddWithValue("val", NpgsqlDbType.Numeric, rate.Value);
             command.Parameters.AddWithValue("is_deflated", NpgsqlDbType.Boolean, rate.IsDeflated);
 
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync(ct);
         }
         catch (Exception e)
         {

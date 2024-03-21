@@ -1,13 +1,18 @@
-﻿using Confluent.Kafka;
+﻿using System.Collections.Concurrent;
+using System.Diagnostics;
+using Confluent.Kafka;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Vasiliev.Idp.Command.Repository;
 using Vasiliev.Idp.Dto;
+using static Confluent.Kafka.ConfigPropertyNames;
 
 namespace Vasiliev.Idp.Command.Services;
 
 public class MessageProcessor : IMessageProcessor
 {
+    private const int RateBatchSize = 100;
+
     public MessageProcessor(IRateRepository repository, ILogger<MessageProcessor> logger)
     {
         Repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -17,7 +22,10 @@ public class MessageProcessor : IMessageProcessor
     private IRateRepository Repository { get; }
     private ILogger<MessageProcessor> Logger { get; }
 
-    public void Process(string? message, CancellationToken ct)
+    private ConcurrentQueue<RateDataDto> RatesQueue { get; } = new();
+    private AutoResetEvent QueueSignal { get; } = new(false);
+
+    public void Enqueue(string? message, CancellationToken ct)
     {
         if (message == null)
         {
@@ -44,7 +52,26 @@ public class MessageProcessor : IMessageProcessor
 
         if (dto.Data != null && dto.Data.IsDeflated)
         {
-            Repository.InsertOrUpdateRate(dto.Data);
+            RatesQueue.Enqueue(dto.Data);
+            QueueSignal.Set();
         }
+    }
+
+    public async Task ProcessMessageQueue(CancellationToken ct)
+    {
+        int counter = 0;
+        List<RateDataDto> batch = new List<RateDataDto>(RateBatchSize);
+        while (RatesQueue.TryDequeue(out var rate) && rate != null && counter < RateBatchSize)
+        {
+            batch.Add(rate);
+            counter++;
+        }
+
+        if (batch.Any())
+        {
+            await Repository.InsertOrUpdateRatesAsync(batch, ct);
+        }
+
+        QueueSignal.WaitOne();
     }
 }
