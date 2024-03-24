@@ -1,8 +1,8 @@
 ﻿using Vasiliev.Idp.Orchestrator.Models;
 
-namespace Vasiliev.Idp.Orchestrator.Services
+namespace Vasiliev.Idp.Orchestrator.Repository
 {
-    public class QueryServiceStub :  IQueryService
+    public class RateQueryRepositoryStub : IRateQueryRepository
     {
         private readonly string[] _cities =
         {
@@ -17,9 +17,9 @@ namespace Vasiliev.Idp.Orchestrator.Services
         private readonly LocationNode[] _nodes;
         private readonly ProductGroup[] _groups;
 
-  
-        protected ILogger<QueryService> Logger { get; }
-        public QueryServiceStub(ILogger<QueryService> logger) 
+
+        protected ILogger<RateQueryRepository> Logger { get; }
+        public RateQueryRepositoryStub(ILogger<RateQueryRepository> logger)
         {
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -46,7 +46,7 @@ namespace Vasiliev.Idp.Orchestrator.Services
             {
                 var nodeFrom = _nodes[nodeFromIndex];
                 var initialNodeToIndex = nodeFromIndex == nodeFromInitialIndex
-                    ? (skip/ _groups.Length) % _nodes.Length 
+                    ? skip / _groups.Length % _nodes.Length
                     : 0;
 
                 for (int nodeToIndex = initialNodeToIndex; nodeToIndex < _nodes.Length; nodeToIndex++)

@@ -2,6 +2,7 @@
 using Serilog;
 using Vasiliev.Idp.Orchestrator.Components;
 using Vasiliev.Idp.Orchestrator.Config;
+using Vasiliev.Idp.Orchestrator.Repository;
 using Vasiliev.Idp.Orchestrator.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +12,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.Configure<KafkaOptions>(builder.Configuration.GetSection(KafkaOptions.Kafka));
 builder.Services.Configure<DbOptions>(builder.Configuration.GetSection(DbOptions.Db));
-builder.Services.AddSingleton<IQueryService, QueryService>();
+builder.Services.AddSingleton<IRateQueryRepository, RateQueryRepository>();
 builder.Services.AddSingleton<IKafkaProducerService, KafkaProducerService>();
 builder.Services.AddSingleton<CalculatorFacadeService>();
 

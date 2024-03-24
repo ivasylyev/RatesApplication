@@ -41,12 +41,13 @@ public sealed class ConsumerWorker : BackgroundService
     private void StartConsumerLoop(CancellationToken ct)
     {
         Consumer.Subscribe(Options.RatesCallbackTopicName);
-        var i = 0;
+        Logger.LogInformation("Consuming loop is started");
+
         while (!ct.IsCancellationRequested)
+        {
             try
             {
                 var consumeResult = Consumer.Consume(ct);
-                i++;
                 if (consumeResult != null)
                 {
                     Logger.LogTrace($"{consumeResult.Message?.Key}: {consumeResult.Message?.Value}");
@@ -73,10 +74,13 @@ public sealed class ConsumerWorker : BackgroundService
                 Logger.LogCritical(e, "Unexpected error.");
                 break;
             }
+        }
+        Logger.LogInformation("Consuming loop is stopped");
     }
 
     private async Task StartProcessorLoop(CancellationToken ct)
     {
+        Logger.LogInformation("Processing loop is started");
         while (!ct.IsCancellationRequested)
         {
             try
@@ -89,7 +93,7 @@ public sealed class ConsumerWorker : BackgroundService
                 Logger.LogError(e, "cannot process rates.");
             }
         }
-
+        Logger.LogInformation("Processing loop is stopped");
     }
 
     public override void Dispose()

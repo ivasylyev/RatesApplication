@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Npgsql;
 using Vasiliev.Idp.Orchestrator.Models;
-using Vasiliev.Idp.Orchestrator.Services;
+using Vasiliev.Idp.Orchestrator.Repository;
 
 namespace Vasiliev.Idp.Orchestrator.Components.Pages;
 
@@ -12,7 +12,7 @@ public partial class Rates
     bool _skipped;
 
     [Inject] 
-    private IQueryService QueryService { get; set; } = default!;
+    private IRateQueryRepository QueryRepository { get; set; } = default!;
 
     private Rate[]? _rates;
     private int _rateCount;
@@ -22,14 +22,14 @@ public partial class Rates
     {
         if (firstRender)
         {
-             _rates = await QueryService.GetRatesAsync(PageSize).ToArrayAsync();
-             _rateCount = await QueryService.GetRatesCountAsync();
+             _rates = await QueryRepository.GetRatesAsync(PageSize).ToArrayAsync();
+             _rateCount = await QueryRepository.GetRatesCountAsync();
             StateHasChanged();
         }
     }
     private async Task PageSelected(int page)
     {
         _currentPageNumber = page;
-        _rates = await QueryService.GetRatesAsync(PageSize, (page - 1) * PageSize).ToArrayAsync();
+        _rates = await QueryRepository.GetRatesAsync(PageSize, (page - 1) * PageSize).ToArrayAsync();
     }
 }

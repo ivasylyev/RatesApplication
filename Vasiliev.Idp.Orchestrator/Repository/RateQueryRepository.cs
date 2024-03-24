@@ -4,14 +4,14 @@ using Npgsql;
 using Vasiliev.Idp.Orchestrator.Config;
 using Vasiliev.Idp.Orchestrator.Models;
 
-namespace Vasiliev.Idp.Orchestrator.Services
+namespace Vasiliev.Idp.Orchestrator.Repository
 {
-    public class QueryService : IQueryService
+    public class RateQueryRepository : IRateQueryRepository
     {
         protected DbOptions Options { get; }
-        protected ILogger<QueryService> Logger { get; }
+        protected ILogger<RateQueryRepository> Logger { get; }
 
-        public QueryService(IOptions<DbOptions> options, ILogger<QueryService> logger)
+        public RateQueryRepository(IOptions<DbOptions> options, ILogger<RateQueryRepository> logger)
         {
             Options = options.Value ??
                       throw new ArgumentNullException(nameof(options), $"{nameof(options)} doesn't have Value");

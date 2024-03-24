@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using Vasiliev.Idp.Dto;
 using Vasiliev.Idp.Orchestrator.Models;
+using Vasiliev.Idp.Orchestrator.Repository;
 
 namespace Vasiliev.Idp.Orchestrator.Services;
 
@@ -9,20 +10,20 @@ public class CalculatorFacadeService
     private const int BufferSize = 100;
     private IKafkaProducerService KafkaProducerService { get; }
 
-    private IQueryService QueryService { get; }
+    private IRateQueryRepository RateQueryRepository { get; }
 
-    public CalculatorFacadeService(IKafkaProducerService kafkaProducerService, IQueryService queryService)
+    public CalculatorFacadeService(IKafkaProducerService kafkaProducerService, IRateQueryRepository rateQueryRepository)
     {
         KafkaProducerService = kafkaProducerService;
-        QueryService = queryService;
+        RateQueryRepository = rateQueryRepository;
     }
 
     public async Task SendToKafka(Action<int> updateProgress, CancellationToken ct)
     {
         KafkaProducerService.SendCommand(RateCommandDto.StartCalculate, ct);
 
-        var rateCount = await QueryService.GetNonDeflatedRatesCountAsync();
-        var rates = QueryService.GetRatesAsync();
+        var rateCount = await RateQueryRepository.GetNonDeflatedRatesCountAsync();
+        var rates = RateQueryRepository.GetRatesAsync();
         var rateDtoBuffer = new List<RateDataDto>(BufferSize);
         var progress = new KafkaProgress(rateCount);
 
