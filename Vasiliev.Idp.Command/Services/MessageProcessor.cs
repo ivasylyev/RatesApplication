@@ -1,11 +1,8 @@
 ﻿using System.Collections.Concurrent;
-using System.Diagnostics;
-using Confluent.Kafka;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Vasiliev.Idp.Command.Repository;
 using Vasiliev.Idp.Dto;
-using static Confluent.Kafka.ConfigPropertyNames;
 
 namespace Vasiliev.Idp.Command.Services;
 
@@ -61,7 +58,7 @@ public class MessageProcessor : IMessageProcessor
     {
         int counter = 0;
         List<RateDataDto> batch = new List<RateDataDto>(RateBatchSize);
-        while (RatesQueue.TryDequeue(out var rate) && rate != null && counter < RateBatchSize)
+        while (counter < RateBatchSize && RatesQueue.TryDequeue(out var rate))
         {
             batch.Add(rate);
             counter++;
@@ -69,14 +66,13 @@ public class MessageProcessor : IMessageProcessor
 
         if (batch.Any())
         {
-            Logger.LogDebug($"Processed {batch.Count} messages");
+            Logger.LogDebug($"Processed {batch.Count} messages. Messages in queue:{RatesQueue.Count}");
             await Repository.InsertOrUpdateRatesAsync(batch, ct);
         }
         else
         {
-            Logger.LogDebug($"Message queue is empty. Waiting for message to process");
+            Logger.LogDebug("Message queue is empty. Waiting for message to process");
             QueueSignal.WaitOne();
         }
-
     }
 }

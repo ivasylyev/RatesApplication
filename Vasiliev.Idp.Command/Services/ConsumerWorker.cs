@@ -42,14 +42,16 @@ public sealed class ConsumerWorker : BackgroundService
     {
         Consumer.Subscribe(Options.RatesCallbackTopicName);
         Logger.LogInformation("Consuming loop is started");
-
+ int i = 0;
         while (!ct.IsCancellationRequested)
         {
+           
             try
             {
                 var consumeResult = Consumer.Consume(ct);
                 if (consumeResult != null)
                 {
+                    i++;
                     Logger.LogTrace($"{consumeResult.Message?.Key}: {consumeResult.Message?.Value}");
 
                     Processor.Enqueue(consumeResult.Message?.Value, ct);
