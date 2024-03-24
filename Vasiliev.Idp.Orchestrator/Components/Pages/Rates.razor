@@ -26,6 +26,7 @@ else
                 <th>Код Транспортной группы</th>
                 <th>Транспортная группа</th>
                 <th>Стоимость</th>
+                <th>Дефлятор</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +43,7 @@ else
                     <td>@rate.ProductGroup?.Code</td>
                     <td>@rate.ProductGroup?.Name</td>
                     <td>@rate.Value</td>
+                    <td>@rate.IsDeflated</td>
                 </tr>
             }
         </tbody>

@@ -4,15 +4,16 @@ namespace Vasiliev.Idp.Calculator.Repository;
 
 public class RateRepository : IRateRepository
 {
-    private const int YearsToDeflate = 2;
-    private const decimal ValueCoefficient = 1.1m;
+    private readonly decimal[] _valueCoefficient = new[] { 1.1m, 1.1m * 1.1m };
     private Dictionary<string, RateDataDto> Rates { get; } = new();
+    private int YearsToDeflate => _valueCoefficient.Length;
 
     public void Reset()
     {
         Rates.Clear();
     }
-    public ICollection<RateDataDto> GetRates() 
+
+    public ICollection<RateDataDto> GetRates()
         => Rates.Values;
 
     public void AddRate(RateDataDto rate)
@@ -27,7 +28,6 @@ public class RateRepository : IRateRepository
         }
     }
 
-
     private IEnumerable<RateDataDto> DeflateRate(RateDataDto rate)
     {
         yield return rate;
@@ -41,7 +41,7 @@ public class RateRepository : IRateRepository
                 NodeFromId = rate.NodeFromId,
                 NodeToId = rate.NodeToId,
                 ProductGroupId = rate.ProductGroupId,
-                Value = rate.Value * ValueCoefficient
+                Value = rate.Value * _valueCoefficient[year - 1]
             };
     }
 }

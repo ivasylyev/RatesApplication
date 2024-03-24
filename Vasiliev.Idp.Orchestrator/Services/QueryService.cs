@@ -53,7 +53,15 @@ namespace Vasiliev.Idp.Orchestrator.Services
         }
 
 
-        public async Task<int> GetRateCountAsync()
+        public async Task<int> GetRatesCountAsync()
+            => await GetRateCountInternalAsync(GetRatesCountSql());
+
+
+        public async Task<int> GetNonDeflatedRatesCountAsync()
+            => await GetRateCountInternalAsync(GetNonDeflatedRatesCountSql());
+
+
+        private async Task<int> GetRateCountInternalAsync(string sql)
         {
             try
             {
@@ -63,7 +71,7 @@ namespace Vasiliev.Idp.Orchestrator.Services
                 await using var dataSource = NpgsqlDataSource.Create(Options.ConnectionString);
                 await using var con = dataSource.CreateConnection();
                 con.Open();
-                var result = await con.ExecuteScalarAsync<int>(GetRatesCountSql());
+                var result = await con.ExecuteScalarAsync<int>(sql);
                 return result;
             }
             catch (Exception e)
@@ -94,5 +102,8 @@ namespace Vasiliev.Idp.Orchestrator.Services
 
         private static string GetRatesCountSql()
             => @"SELECT public.""GetRatesCount""()";
+
+        private static string GetNonDeflatedRatesCountSql()
+            => @"SELECT public.""GetNonDeflatedRatesCount""()";
     }
 }

@@ -23,7 +23,7 @@ public partial class Rates
         if (firstRender)
         {
              _rates = await QueryService.GetRatesAsync(PageSize).ToArrayAsync();
-             _rateCount = await QueryService.GetRateCountAsync();
+             _rateCount = await QueryService.GetRatesCountAsync();
             StateHasChanged();
         }
     }

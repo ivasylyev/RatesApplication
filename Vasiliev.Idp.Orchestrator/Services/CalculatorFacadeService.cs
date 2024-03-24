@@ -21,7 +21,7 @@ public class CalculatorFacadeService
     {
         KafkaProducerService.SendCommand(RateCommandDto.StartCalculate, ct);
 
-        var rateCount = await QueryService.GetRateCountAsync();
+        var rateCount = await QueryService.GetNonDeflatedRatesCountAsync();
         var rates = QueryService.GetRatesAsync();
         var rateDtoBuffer = new List<RateDataDto>(BufferSize);
         var progress = new KafkaProgress(rateCount);

@@ -81,7 +81,14 @@ namespace Vasiliev.Idp.Orchestrator.Services
             }
         }
 
-        public async Task<int> GetRateCountAsync()
+        public async Task<int> GetRatesCountAsync()
+        {
+            int l = _nodes.Length;
+            int g = _groups.Length;
+            return await Task.FromResult(l * l * g);
+        }
+
+        public async Task<int> GetNonDeflatedRatesCountAsync()
         {
             int l = _nodes.Length;
             int g = _groups.Length;

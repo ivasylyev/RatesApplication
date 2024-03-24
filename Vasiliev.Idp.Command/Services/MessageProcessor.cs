@@ -11,7 +11,7 @@ namespace Vasiliev.Idp.Command.Services;
 
 public class MessageProcessor : IMessageProcessor
 {
-    private const int RateBatchSize = 100;
+    private const int RateBatchSize = 200;
 
     public MessageProcessor(IRateRepository repository, ILogger<MessageProcessor> logger)
     {
@@ -69,9 +69,14 @@ public class MessageProcessor : IMessageProcessor
 
         if (batch.Any())
         {
+            Logger.LogDebug($"Processed {batch.Count} messages");
             await Repository.InsertOrUpdateRatesAsync(batch, ct);
         }
+        else
+        {
+            Logger.LogDebug($"Message queue is empty. Waiting for message to process");
+            QueueSignal.WaitOne();
+        }
 
-        QueueSignal.WaitOne();
     }
 }
