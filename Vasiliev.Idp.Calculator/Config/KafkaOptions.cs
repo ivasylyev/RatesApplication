@@ -14,6 +14,4 @@ public class KafkaOptions
 
     public string GroupId { get; set; } = default!;
 
-    public int RatesForCalculationPartition { get; set; }
-
 }

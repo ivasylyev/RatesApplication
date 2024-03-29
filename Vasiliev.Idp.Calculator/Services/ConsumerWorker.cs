@@ -38,8 +38,18 @@ public sealed class ConsumerWorker : BackgroundService
 
     private void StartConsumerLoop(CancellationToken ct)
     {
-       // Consumer.Assign(new TopicPartition(Options.RatesCalcTopicName, Options.RatesForCalculationPartition));
-        Consumer.Subscribe(Options.RatesCalcTopicName);
+        if (int.TryParse(Environment.GetEnvironmentVariable("RATES_CALCULATION_PARTITION"), out int partition))
+        {
+
+            Consumer.Assign(new TopicPartition(Options.RatesCalcTopicName, partition));
+            Logger.LogInformation($"Assigned to topic {Options.RatesCalcTopicName} partition {partition}");
+        }
+        else
+        {
+            Consumer.Subscribe(Options.RatesCalcTopicName);
+            Logger.LogInformation($"Subscribed to topic {Options.RatesCalcTopicName}");
+        }
+        
         while (!ct.IsCancellationRequested)
         {
             try

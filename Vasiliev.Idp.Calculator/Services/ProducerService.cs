@@ -35,7 +35,6 @@ public class ProducerService : IProducerService
             int i = 0;
             var chunks = rates
                 .GroupBy(_ => i++ / BufferSize);
-            // .Select(g => g);
 
             foreach (var chunk in chunks)
             {
