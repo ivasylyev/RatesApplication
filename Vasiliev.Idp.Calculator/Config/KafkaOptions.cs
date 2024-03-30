@@ -14,4 +14,5 @@ public class KafkaOptions
 
     public string GroupId { get; set; } = default!;
 
+    public string EnvironmentPartitionName { get; set; } = default!;
 }

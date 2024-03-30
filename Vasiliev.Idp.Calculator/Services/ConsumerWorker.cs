@@ -3,8 +3,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Vasiliev.Idp.Calculator.Config;
-using static Confluent.Kafka.ConfigPropertyNames;
-
 
 namespace Vasiliev.Idp.Calculator.Services;
 
@@ -38,18 +36,8 @@ public sealed class ConsumerWorker : BackgroundService
 
     private void StartConsumerLoop(CancellationToken ct)
     {
-        if (int.TryParse(Environment.GetEnvironmentVariable("RATES_CALCULATION_PARTITION"), out int partition))
-        {
+        TopicAssignOrSubscribe();
 
-            Consumer.Assign(new TopicPartition(Options.RatesCalcTopicName, partition));
-            Logger.LogInformation($"Assigned to topic {Options.RatesCalcTopicName} partition {partition}");
-        }
-        else
-        {
-            Consumer.Subscribe(Options.RatesCalcTopicName);
-            Logger.LogInformation($"Subscribed to topic {Options.RatesCalcTopicName}");
-        }
-        
         while (!ct.IsCancellationRequested)
         {
             try
@@ -82,6 +70,38 @@ public sealed class ConsumerWorker : BackgroundService
                 Logger.LogCritical(e, "Unexpected error.");
                 break;
             }
+        }
+    }
+
+    /// <summary>
+    /// Assign to the partition specified in the environment variable "RATES_CALCULATION_PARTITION"
+    /// Subscribe to the whole topi if the variable is not set
+    /// </summary>
+    private void TopicAssignOrSubscribe()
+    {
+        CheckConfig(nameof(Options.EnvironmentPartitionName), Options.EnvironmentPartitionName);
+        CheckConfig(nameof(Options.RatesCalcTopicName), Options.RatesCalcTopicName);
+
+        var environmentPartition = Environment.GetEnvironmentVariable(Options.EnvironmentPartitionName);
+        var topicName = Options.RatesCalcTopicName;
+        if (int.TryParse(environmentPartition, out int partition))
+        {
+            Consumer.Assign(new TopicPartition(topicName, partition));
+            Logger.LogInformation($"Assigned to topic {topicName} partition {partition}");
+        }
+        else
+        {
+            Consumer.Subscribe(topicName);
+            Logger.LogInformation($"Subscribed to topic {topicName}");
+        }
+    }
+
+
+    private void CheckConfig(string paramName, string paramValue)
+    {
+        if (string.IsNullOrEmpty(paramValue))
+        {
+            throw new InvalidOperationException($"Config parameter {paramName} is not set");
         }
     }
 
