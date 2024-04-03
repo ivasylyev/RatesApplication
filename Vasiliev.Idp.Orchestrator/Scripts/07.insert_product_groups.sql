@@ -1,6 +1,6 @@
-INSERT INTO public."ProductGroup"("Code", "Name")
+п»їINSERT INTO public."ProductGroup"("Code", "Name")
 	VALUES 
-	('T01', 'Каучуки'),
-	('T02', 'Полиолефины'),
-	('T02', 'Наливная химия')
+	('T01', 'РљР°СѓС‡СѓРєРё'),
+	('T02', 'РџРѕР»РёРѕР»РµС„РёРЅС‹'),
+	('T02', 'РќР°Р»РёРІРЅР°СЏ С…РёРјРёСЏ')
 	
