@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rates-orchestrator-deployment # Имя деплоймента
+spec:
+   
+  replicas: 1 # Количество реплик
+  selector:
+    matchLabels: # Определение меток и их значений, по которым будет определяться принадлежность пода деплойменту
+      app: rates-orchestrator-pod
+  template: # Описание конфигурации подов
+    metadata:
+      labels:
+        app: rates-orchestrator-pod # Специальная метка для подов, по которой определяется их принадлежность данному деплойменту
+    spec:
+      #ports: 
+       # - name: http
+       #   protocol: TCP
+       #   port: 9092  
+       #   targetPort: 9092     
+
+     
+      containers: # Описание контейнеров, создаваемых в поде
+      - name: rates-orchestrator-container # Имя контейнера внутри пода
+        image: docker.io/library/rates-orchestrator:latest # Название образа контейнера с указанием репозитория
+        ports: # Описание портов контейнера
+        - name: pod-port
+          containerPort: 80
+
+        imagePullPolicy: Never
+        env: # Перечисление переменных окружения и их значений
+        - name: "ASPNETCORE_ENVIRONMENT"
+          value: "Kubernetes"

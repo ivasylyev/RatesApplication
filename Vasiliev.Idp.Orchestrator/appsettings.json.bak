@@ -2,7 +2,7 @@
   "Kafka": {
     "RatesCalcTopicName": "vasiliev-idp-rates-calc",
     "RatesCalcPartitionCount": 2,
-    "BrokerList": "host.minikube.internal:9092",
+    "BrokerList": "kubernetes.docker.internal:9092",
     "CoolDownIntervalSec": 10
   },
   "Db": {
