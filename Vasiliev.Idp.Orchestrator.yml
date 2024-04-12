@@ -13,11 +13,7 @@ spec:
       labels:
         app: rates-orchestrator-pod # Специальная метка для подов, по которой определяется их принадлежность данному деплойменту
     spec:
-      #ports: 
-       # - name: http
-       #   protocol: TCP
-       #   port: 9092  
-       #   targetPort: 9092     
+
 
      
       containers: # Описание контейнеров, создаваемых в поде
